@@ -17,6 +17,7 @@ public class Booking {
 
     private Date date;
 
+    private int timeslotId;
 
     @ManyToOne
     @JsonIgnore

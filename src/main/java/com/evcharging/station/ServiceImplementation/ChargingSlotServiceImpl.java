@@ -2,9 +2,10 @@ package com.evcharging.station.ServiceImplementation;
 
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.Service.ChargingSlotService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class ChargingSlotServiceImpl implements ChargingSlotService {
     @Override
     public ChargingSlotDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO) {

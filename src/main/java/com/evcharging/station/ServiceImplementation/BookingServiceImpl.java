@@ -2,10 +2,11 @@ package com.evcharging.station.ServiceImplementation;
 
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.Service.BookingService;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDTO createBooking(BookingDTO bookingDTO) {

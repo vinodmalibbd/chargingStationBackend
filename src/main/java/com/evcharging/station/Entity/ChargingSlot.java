@@ -1,9 +1,7 @@
 package com.evcharging.station.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +13,9 @@ public class ChargingSlot {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String slotId;
     private double pricePerHour;
-    private String Status;
+    private boolean isAvailable;
+    @ManyToOne
+    @JoinColumn(name = "chargingStation")
+    @JsonIgnore
+    private  ChargingStation chargingStation;
 }

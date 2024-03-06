@@ -1,9 +1,7 @@
 package com.evcharging.station.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +16,20 @@ public class Booking {
     private String status;
 
     private Date date;
+
+
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "userId")
+    private User user;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "chargingStationId")
+    private ChargingStation chargingStation;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "chargingSlotId")
+    private ChargingSlot chargingSlot;
 
 
 }

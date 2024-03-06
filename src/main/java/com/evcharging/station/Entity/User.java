@@ -4,6 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -19,4 +24,8 @@ public class User {
     private  String emailId;
     @Column(nullable = false,length = 15,name ="MobileNumber")
     private  String mobileNumber;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<FeedBack> feedbacks=new HashSet<>();
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Booking> userBookings=new ArrayList<>();
 }

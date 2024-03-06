@@ -1,11 +1,13 @@
 package com.evcharging.station.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,4 +20,11 @@ public class ChargingStation {
     private String name;
     private double longitude;
     private double latitude;
+    private String email;
+    private int openTime;
+    private int closeTime;
+    @OneToMany(mappedBy = "chargingStation",cascade = CascadeType.ALL)
+    private Set<ChargingSlot> chargingSlots=new HashSet<>();
+    @OneToMany(mappedBy = "chargingStation" ,cascade = CascadeType.ALL)
+    private List<Booking> stationBookigs=new ArrayList<>();
 }

@@ -1,9 +1,7 @@
 package com.evcharging.station.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +15,9 @@ public class FeedBack {
 
     private String feedback;
     private int rating;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "userId")
+    private  User user;
+
 }

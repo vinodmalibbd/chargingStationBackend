@@ -1,10 +1,19 @@
 package com.evcharging.station.DTO;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Date;
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingDTO {
     private String bookingId;
-    private String status;
-
     private Date date;
+    private String userId;
+    private String chargingStationId;
+    private String chargingSlotId;
 }

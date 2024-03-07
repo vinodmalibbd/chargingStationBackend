@@ -6,7 +6,7 @@ import com.evcharging.station.Entity.User;
 import java.util.List;
 
 public interface UserService {
-    UserDTO getUserById(int id);
+    UserDTO getUserById(String userId);
     UserDTO createUser(UserDTO user);
     List<UserDTO> getAllUser();
 

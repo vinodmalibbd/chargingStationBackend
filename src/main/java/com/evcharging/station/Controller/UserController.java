@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class UserController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){

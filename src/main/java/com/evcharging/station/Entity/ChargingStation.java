@@ -20,7 +20,7 @@ public class ChargingStation {
     private String name;
     private double longitude;
     private double latitude;
-    private String email;
+    private String emailId;
     private int openTime;
     private int closeTime;
     @OneToMany(mappedBy = "chargingStation",cascade = CascadeType.ALL)

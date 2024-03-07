@@ -4,5 +4,5 @@ import com.evcharging.station.Entity.ChargingStation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChargingStationRepo extends JpaRepository<ChargingStation,String> {
-    ChargingStation findByEmail(String email);
+    ChargingStation findByEmailId(String emailId);
 }

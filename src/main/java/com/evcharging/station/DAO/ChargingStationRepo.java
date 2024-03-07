@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChargingStationRepo extends JpaRepository<ChargingStation,String> {
     ChargingStation findByEmailId(String emailId);
+
 }

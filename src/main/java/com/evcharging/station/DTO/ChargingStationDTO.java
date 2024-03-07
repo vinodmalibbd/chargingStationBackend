@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,4 +19,5 @@ public class ChargingStationDTO {
     private double longitude;
     private double latitude;
     private String emailId;
+    private List<ChargingSlotDTO> chargingSlotDTOS;
 }

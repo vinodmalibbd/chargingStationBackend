@@ -1,24 +1,39 @@
 package com.evcharging.station.Controller;
 
 import com.evcharging.station.DTO.ChargingSlotDTO;
+import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.Service.ChargingSlotService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 @RestController
+@RequestMapping("/chargingslot")
 public class ChargingSlotController {
-    @PostMapping("/addslot")
-    public ResponseEntity<ChargingSlotDTO> createCharging(@RequestBody ChargingSlotDTO chargingSlotDTO){
-        return  new ResponseEntity<>(chargingSlotDTO, HttpStatusCode.valueOf(201));
+    @Autowired
+    private ChargingSlotService chargingSlotService;
+
+    @PostMapping("/addslot/{chargingStationId}")
+    public ResponseEntity<ChargingStationDTO> createChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,@PathVariable String chargingStationId){
+        ChargingStationDTO chargingStationDTO = chargingSlotService.addChargingSlot(chargingSlotDTO,chargingStationId);
+        return  new ResponseEntity<>(chargingStationDTO, HttpStatusCode.valueOf(201));
 
     }
-    @GetMapping("/getallslot")
-    public  ResponseEntity<List<ChargingSlotDTO>> getAllChargingSlot(){
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
+
+    @GetMapping("/{chargingSlotId}")
+    public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable String chargingSlotId){
+        ChargingSlotDTO chargingSlotById = chargingSlotService.getChargingSlotById(chargingSlotId);
+        return  new ResponseEntity<>(chargingSlotById,HttpStatusCode.valueOf(200));
     }
+    @GetMapping("/all/{chargingStationId}")
+    public  ResponseEntity<List<ChargingSlotDTO>> getAllSlotOfStation(@PathVariable String chargingStationId){
+        List<ChargingSlotDTO> allChargingSlotByChargingId = chargingSlotService.getAllChargingSlotByChargingId(chargingStationId);
+        return  new ResponseEntity<>(allChargingSlotByChargingId,HttpStatusCode.valueOf(200));
+    }
+
 }

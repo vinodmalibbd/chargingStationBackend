@@ -3,6 +3,7 @@ package com.evcharging.station.ServiceImplementation;
 import com.evcharging.station.DAO.ChargingSlotRepo;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingSlotDTO;
+import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Entity.ChargingSlot;
 import com.evcharging.station.Entity.ChargingStation;
 import com.evcharging.station.Service.ChargingSlotService;
@@ -10,10 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ChargingSlotServiceImpl implements ChargingSlotService {
@@ -24,25 +22,36 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
     private ChargingStationRepo chargingStationRepo;
     @Autowired
     private ModelMapper modelMapper;
+
     @Override
-    public ChargingSlotDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO) {
-        Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingSlotDTO.getChargingStationId());
+    public ChargingStationDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO, String chargingStationId) {
+        Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
             System.out.println("can't add slot due to station is not exits");
             return null;
         }
         ChargingStation chargingStation = isChargingStation.get();
-        Set<ChargingSlot> chargingSlots = chargingStation.getChargingSlots();
-        if(chargingSlots.contains(modelMapper.map(chargingSlotDTO,ChargingSlot.class))){
-            System.out.println("can't add slot due to slot already exits");
-            return null;
-        }
-        chargingSlots.add(modelMapper.map(chargingSlotDTO, ChargingSlot.class));
-        chargingStation.setChargingSlots(chargingSlots);
+        List<ChargingSlot> slots=chargingStation.getChargingSlots();
+        ChargingSlot slot = modelMapper.map(chargingSlotDTO, ChargingSlot.class);
+        slot.setChargingStation(chargingStation);
+        slots.add(slot);
+        chargingStation.setChargingSlots(slots);
         ChargingStation savedChargingStation = chargingStationRepo.save(chargingStation);
-        return chargingSlotDTO;
+        List<ChargingSlot> chargingSlots = savedChargingStation.getChargingSlots();
+        List<ChargingSlotDTO> dtos=new ArrayList<>();
+        for(ChargingSlot s:chargingSlots){
+            dtos.add(modelMapper.map(s,ChargingSlotDTO.class));
+        }
 
+
+        ChargingStationDTO mappedDTOs = modelMapper.map(savedChargingStation, ChargingStationDTO.class);
+        mappedDTOs.setChargingSlotDTOS(dtos);
+        return  mappedDTOs;
     }
+
+
+
+
 
     @Override
     public ChargingSlotDTO changeAvailablity(String chargingSlotId) {
@@ -57,23 +66,33 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
             return null;
         }
         ChargingSlot chargingSlot = slotbyId.get();
-        return  modelMapper.map(chargingSlot,ChargingSlotDTO.class);
+        ChargingStation chargingStation = chargingSlot.getChargingStation();
 
+        ChargingSlotDTO map = modelMapper.map(chargingSlot, ChargingSlotDTO.class);
+        map.setChargingStationDTO(modelMapper.map(chargingStation,ChargingStationDTO.class));
+
+        return map;
     }
 
     @Override
-    public Set<ChargingSlotDTO> getAllChargingSlotByChargingId(String chargingStationId) {
-        Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
-        if(isChargingStation.isEmpty()){
-            System.out.println("charging station is not available");
+    public List<ChargingSlotDTO> getAllChargingSlotByChargingId(String chargingStationId) {
+        Optional<ChargingStation> byId = chargingStationRepo.findById(chargingStationId);
+        if(byId.isEmpty()){
+            System.out.println("station is not present");
             return  null;
         }
-        ChargingStation chargingStation = isChargingStation.get();
-        Set<ChargingSlot> chargingSlots = chargingStation.getChargingSlots();
-        Set<ChargingSlotDTO> chargingSlotDTOS=new HashSet<>();
-        for (ChargingSlot s:chargingSlots){
-            chargingSlotDTOS.add(modelMapper.map(s,ChargingSlotDTO.class));
+
+        ChargingStation chargingStation = byId.get();
+
+        List<ChargingSlotDTO> chargingSlotDTOS=new ArrayList<>();
+        List<ChargingSlot> chargingSlots = chargingStation.getChargingSlots();
+
+        for (ChargingSlot chargingSlot : chargingSlots) {
+            chargingSlotDTOS.add(modelMapper.map(chargingSlot,ChargingSlotDTO.class));
         }
-        return  chargingSlotDTOS;
+
+        return chargingSlotDTOS;
     }
+
+
 }

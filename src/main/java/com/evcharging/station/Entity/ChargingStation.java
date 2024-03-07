@@ -24,7 +24,7 @@ public class ChargingStation {
     private int openTime;
     private int closeTime;
     @OneToMany(mappedBy = "chargingStation",cascade = CascadeType.ALL)
-    private Set<ChargingSlot> chargingSlots=new HashSet<>();
+    private List<ChargingSlot> chargingSlots=new ArrayList<>();
     @OneToMany(mappedBy = "chargingStation" ,cascade = CascadeType.ALL)
     private List<Booking> stationBookigs=new ArrayList<>();
 }

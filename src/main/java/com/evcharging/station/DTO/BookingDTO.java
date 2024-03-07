@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+
+import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,4 +18,5 @@ public class BookingDTO {
     private String userId;
     private String chargingStationId;
     private String chargingSlotId;
+
 }

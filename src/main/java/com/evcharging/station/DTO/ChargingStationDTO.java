@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChargingStationDTO {
-    private String stationId;
+    private int stationId;
     private String name;
     private double longitude;
     private double latitude;

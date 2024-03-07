@@ -25,7 +25,7 @@ public class User {
     @Column(nullable = false,length = 15,name ="MobileNumber")
     private  String mobileNumber;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<FeedBack> feedbacks=new HashSet<>();
+    private List<FeedBack> feedbacks=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Booking> userBookings=new ArrayList<>();
 }

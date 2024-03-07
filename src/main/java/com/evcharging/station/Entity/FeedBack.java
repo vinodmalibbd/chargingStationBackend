@@ -10,8 +10,8 @@ import lombok.Setter;
 @Entity
 public class FeedBack {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String feedbackId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int feedbackId;
 
     private String feedback;
     private int rating;
@@ -19,5 +19,9 @@ public class FeedBack {
     @JsonIgnore
     @JoinColumn(name = "userId")
     private  User user;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "chargingStationId")
+    private ChargingStation chargingStation;
 
 }

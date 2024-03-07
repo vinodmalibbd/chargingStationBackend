@@ -23,8 +23,11 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
     @Autowired
     private ModelMapper modelMapper;
 
+
+
+
     @Override
-    public ChargingStationDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO, String chargingStationId) {
+    public ChargingStationDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO, int chargingStationId) {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
             System.out.println("can't add slot due to station is not exits");
@@ -54,12 +57,12 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
 
 
     @Override
-    public ChargingSlotDTO changeAvailablity(String chargingSlotId) {
+    public ChargingSlotDTO changeAvailablity(int chargingSlotId) {
         return null;
     }
 
     @Override
-    public ChargingSlotDTO getChargingSlotById(String chargingSlotId) {
+    public ChargingSlotDTO getChargingSlotById(int chargingSlotId) {
         Optional<ChargingSlot> slotbyId = chargingSlotRepo.findById(chargingSlotId);
         if(slotbyId.isEmpty()){
             System.out.println("charging slot is not exits");
@@ -75,7 +78,7 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
     }
 
     @Override
-    public List<ChargingSlotDTO> getAllChargingSlotByChargingId(String chargingStationId) {
+    public List<ChargingSlotDTO> getAllChargingSlotByChargingId(int chargingStationId) {
         Optional<ChargingStation> byId = chargingStationRepo.findById(chargingStationId);
         if(byId.isEmpty()){
             System.out.println("station is not present");

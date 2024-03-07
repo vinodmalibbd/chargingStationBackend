@@ -14,8 +14,8 @@ import lombok.Setter;
 @Entity
 public class ChargingSlot {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String slotId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int slotId;
     private double pricePerHour;
     private boolean available;
     @ManyToOne

@@ -13,10 +13,10 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
-    private String bookingId;
+    private int bookingId;
     private Date date;
-    private String userId;
-    private String chargingStationId;
-    private String chargingSlotId;
+    private int userId;
+    private int chargingStationId;
+    private int chargingSlotId;
 
 }

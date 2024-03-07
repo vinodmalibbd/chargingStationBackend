@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public UserDTO getUserById(String userId) {
+    public UserDTO getUserById(int userId) {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user is not available");

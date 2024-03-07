@@ -12,10 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedBackDTO {
-    private String feedbackId;
+    private int feedbackId;
 
     private String feedback;
     private int rating;
-    private String userId;
-    private String chargingStationId;
 }

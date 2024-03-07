@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ChargingSlotDTO {
 
-    private String slotId;
+    private int slotId;
     private double pricePerHour;
     private boolean available;
     private ChargingStationDTO chargingStationDTO;

@@ -19,19 +19,19 @@ public class ChargingSlotController {
     private ChargingSlotService chargingSlotService;
 
     @PostMapping("/addslot/{chargingStationId}")
-    public ResponseEntity<ChargingStationDTO> createChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,@PathVariable String chargingStationId){
+    public ResponseEntity<ChargingStationDTO> createChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,@PathVariable int chargingStationId){
         ChargingStationDTO chargingStationDTO = chargingSlotService.addChargingSlot(chargingSlotDTO,chargingStationId);
         return  new ResponseEntity<>(chargingStationDTO, HttpStatusCode.valueOf(201));
 
     }
 
     @GetMapping("/{chargingSlotId}")
-    public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable String chargingSlotId){
+    public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable int chargingSlotId){
         ChargingSlotDTO chargingSlotById = chargingSlotService.getChargingSlotById(chargingSlotId);
         return  new ResponseEntity<>(chargingSlotById,HttpStatusCode.valueOf(200));
     }
     @GetMapping("/all/{chargingStationId}")
-    public  ResponseEntity<List<ChargingSlotDTO>> getAllSlotOfStation(@PathVariable String chargingStationId){
+    public  ResponseEntity<List<ChargingSlotDTO>> getAllSlotOfStation(@PathVariable int chargingStationId){
         List<ChargingSlotDTO> allChargingSlotByChargingId = chargingSlotService.getAllChargingSlotByChargingId(chargingStationId);
         return  new ResponseEntity<>(allChargingSlotByChargingId,HttpStatusCode.valueOf(200));
     }

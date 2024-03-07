@@ -23,7 +23,7 @@ public class ChargingStationController {
         return  new ResponseEntity<>(chargingStation, HttpStatusCode.valueOf(201));
     }
     @GetMapping("/{chargingStationId}")
-    public  ResponseEntity<ChargingStationDTO> getChargingStation(@PathVariable String chargingStationId){
+    public  ResponseEntity<ChargingStationDTO> getChargingStation(@PathVariable int chargingStationId){
         ChargingStationDTO chargingStationById = chargingStationService.getChargingStationById(chargingStationId);
         return new ResponseEntity<>(chargingStationById,HttpStatusCode.valueOf(200));
     }

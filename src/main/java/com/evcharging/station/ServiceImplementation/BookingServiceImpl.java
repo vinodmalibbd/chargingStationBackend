@@ -14,32 +14,32 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDTO> getAllChargingStationBooking(String ChargingStationId) {
+    public List<BookingDTO> getAllChargingStationBooking(int ChargingStationId) {
         return null;
     }
 
     @Override
-    public List<BookingDTO> getAllChargingSlotBooking(String ChargingSlotId) {
+    public List<BookingDTO> getAllChargingSlotBooking(int ChargingSlotId) {
         return null;
     }
 
     @Override
-    public List<BookingDTO> getAllChargingSlotBookingByDate(String ChargingSlotId, Date date) {
+    public List<BookingDTO> getAllChargingSlotBookingByDate(int ChargingSlotId, Date date) {
         return null;
     }
 
     @Override
-    public List<BookingDTO> getAllChargingStationBookingByDate(String ChargingStationId, Date date) {
+    public List<BookingDTO> getAllChargingStationBookingByDate(int ChargingStationId, Date date) {
         return null;
     }
 
     @Override
-    public List<BookingDTO> getAllUserBooking(String userId) {
+    public List<BookingDTO> getAllUserBooking(int userId) {
         return null;
     }
 
     @Override
-    public List<BookingDTO> getAllUserBookingByDate(String userId, Date date) {
+    public List<BookingDTO> getAllUserBookingByDate(int userId, Date date) {
         return null;
     }
 }

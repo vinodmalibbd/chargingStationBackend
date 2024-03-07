@@ -24,7 +24,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     @Autowired
     private ModelMapper modelMapper;
     @Override
-    public ChargingStationDTO getChargingStationById(String chargingStationId) {
+    public ChargingStationDTO getChargingStationById(int chargingStationId) {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
             System.out.println("station is not available");

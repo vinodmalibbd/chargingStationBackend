@@ -5,7 +5,7 @@ import com.evcharging.station.DTO.ChargingStationDTO;
 import java.util.List;
 
 public interface ChargingStationService {
-    ChargingStationDTO getChargingStationById(String chargingStationId);
+    ChargingStationDTO getChargingStationById(int chargingStationId);
     List<ChargingStationDTO> getAllChargingStation();
     ChargingStationDTO createChargingStation(ChargingStationDTO chargingStationDTO);
 }

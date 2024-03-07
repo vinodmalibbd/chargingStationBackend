@@ -18,7 +18,7 @@ public class TimeslotServiceImpl implements TimeslotService {
     }
 
     @Override
-    public List<TimeSlotDTO> availableTimingsChargingSlot(String slotId) {
+    public List<TimeSlotDTO> availableTimingsChargingSlot(int slotId) {
         return null;
     }
 }

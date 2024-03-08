@@ -1,5 +1,5 @@
 # Use a base image with Java 21 installed
-FROM adoptopenjdk:21-jdk-hotspot
+FROM openjdk:21-jdk
 
 # Set the working directory in the container
 WORKDIR /app

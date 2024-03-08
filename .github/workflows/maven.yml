@@ -47,13 +47,13 @@ jobs:
     - name: Connect to EC2 instance
       uses: appleboy/ssh-action@master
       with:
-          host: ${{ secrets.EC2_PUBLIC_IP }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          port: ${{ secrets.EC2_SSH_PORT }}
-          script: |
+        host: ${{ secrets.EC2_PUBLIC_IP }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        port: ${{ secrets.EC2_SSH_PORT }}
+        script: |
             # Commands to execute on the EC2 instance
-            echo "Connected to EC2 instance"
+          echo "Connected to EC2 instance"
             # Add your commands here, for example:
             # sudo systemctl restart your-service-name
 

@@ -43,7 +43,6 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-github-action-demo:latest
 
 
-
       - name: Connect to EC2 instance
         uses: appleboy/ssh-action@master
         with:

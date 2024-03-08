@@ -1,17 +1,16 @@
 package com.evcharging.station.DAO;
 
-import com.evcharging.station.Entity.Booking;
-import com.evcharging.station.Entity.ChargingSlot;
-import com.evcharging.station.Entity.ChargingStation;
-import com.evcharging.station.Entity.User;
+import com.evcharging.station.Entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
 
 public interface BookingRepo extends JpaRepository<Booking,Integer> {
-    List<Booking> findAllByChargingStation(ChargingStation chargingStation);
+
+    Booking findByDateAndChargingSlotAndTimeSlot(Date date, ChargingSlot chargingSlot, TimeSlot timeSlot);
     List<Booking> findAllByUser(User user);
     List<Booking> findAllByChargingSlotAndDate(ChargingSlot chargingSlot, Date date);
-    List<Booking> findAllByChargingSlotAndDateAndTimeslotId(ChargingSlot chargingSlot, Date date,int timeslotId);
+    List<Booking> findAllByChargingSlot(ChargingSlot chargingSlot);
+
 }

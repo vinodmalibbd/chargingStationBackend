@@ -5,7 +5,7 @@ import com.evcharging.station.DTO.TimeSlotDTO;
 import java.util.List;
 
 public interface TimeslotService {
-    TimeSlotDTO createTimeSlot(TimeSlotDTO timeSlotDTO);
+    List<TimeSlotDTO> createAllTimeSlot();
     List<TimeSlotDTO> getAllTimeSlot();
     List<TimeSlotDTO> availableTimingsChargingSlot(int slotId);
 

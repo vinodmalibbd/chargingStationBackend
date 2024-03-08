@@ -15,8 +15,8 @@ import java.util.Date;
 public class BookingDTO {
     private int bookingId;
     private Date date;
-    private int userId;
-    private int chargingStationId;
-    private int chargingSlotId;
-
+    private UserDTO user;
+    private ChargingSlotDTO chargingSlot;
+    private TimeSlotDTO timeSlot;
+    private String status;
 }

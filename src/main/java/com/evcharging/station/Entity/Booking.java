@@ -11,13 +11,14 @@ import java.util.Date;
 @Entity
 public class Booking {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String bookingId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int bookingId;
     private String status;
 
+    @Temporal(TemporalType.DATE)
     private Date date;
 
-    private int timeslotId;
+
 
     @ManyToOne
     @JsonIgnore
@@ -25,12 +26,10 @@ public class Booking {
     private User user;
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name = "chargingStationId")
-    private ChargingStation chargingStation;
-    @ManyToOne
-    @JsonIgnore
     @JoinColumn(name = "chargingSlotId")
     private ChargingSlot chargingSlot;
+    @OneToOne
+    private TimeSlot timeSlot;
 
 
 }

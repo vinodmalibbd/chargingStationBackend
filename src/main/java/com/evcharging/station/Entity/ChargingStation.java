@@ -29,8 +29,8 @@ public class ChargingStation {
     private int closeTime;
     @OneToMany(mappedBy = "chargingStation",cascade = CascadeType.ALL)
     private List<ChargingSlot> chargingSlots=new ArrayList<>();
-    @OneToMany(mappedBy = "chargingStation" ,cascade = CascadeType.ALL)
-    private List<Booking> stationBookigs=new ArrayList<>();
+//    @OneToMany(mappedBy = "chargingStation" ,cascade = CascadeType.ALL)
+//    private List<Booking> stationBookigs=new ArrayList<>();
     @OneToMany(mappedBy = "chargingStation" ,cascade = CascadeType.ALL)
     private List<FeedBack> feedbacks=new ArrayList<>();
 }

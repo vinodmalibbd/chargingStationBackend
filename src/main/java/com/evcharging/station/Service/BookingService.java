@@ -1,12 +1,13 @@
 package com.evcharging.station.Service;
 
 import com.evcharging.station.DTO.BookingDTO;
+import com.evcharging.station.Templates.BookingRequest;
 
 import java.util.Date;
 import java.util.List;
 
 public interface BookingService {
-    BookingDTO createBooking(BookingDTO bookingDTO);
+    BookingDTO createBooking(BookingRequest bookingDetails);
     List<BookingDTO> getAllChargingStationBooking(int ChargingStationId);
     List<BookingDTO> getAllChargingSlotBooking(int ChargingSlotId);
     List<BookingDTO> getAllChargingSlotBookingByDate(int ChargingSlotId, Date date);

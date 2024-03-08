@@ -5,7 +5,7 @@ FROM openjdk:21-jdk
 WORKDIR /app
 
 # Copy the compiled Spring Boot JAR file into the container
-COPY target/chargingStationBackend.jar /app/app.jar
+COPY target/chargingStationBackend.jar app.jar
 
 # Expose the port your Spring Boot application listens on (default is 8080)
 EXPOSE 8080

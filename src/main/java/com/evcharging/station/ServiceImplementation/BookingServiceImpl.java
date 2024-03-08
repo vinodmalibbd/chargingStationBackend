@@ -15,10 +15,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -96,7 +93,18 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDTO> getAllChargingSlotBookingByDate(int ChargingSlotId, Date date) {
-        return null;
+
+        Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(ChargingSlotId);
+        if (isSlot.isEmpty()){
+            System.out.println("not found slot");
+            return null;
+        }
+        List<Booking> allByChargingSlotAndDate = bookingRepo.findAllByChargingSlotAndDate(isSlot.get(), date);
+        List<BookingDTO> ls=new ArrayList<>();
+        for (Booking b:allByChargingSlotAndDate){
+            ls.add(modelMapper.map(b,BookingDTO.class));
+        }
+        return ls;
     }
 
     @Override
@@ -106,11 +114,94 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDTO> getAllUserBooking(int userId) {
-        return null;
+        Optional<User> isUser = userRepo.findById(userId);
+        if(isUser.isEmpty()){
+            System.out.println("user not found");
+            return null;
+        }
+        List<Booking> allByUser = bookingRepo.findAllByUser(isUser.get());
+        List<BookingDTO> ls=new ArrayList<>();
+        for (Booking b: allByUser){
+            ls.add(modelMapper.map(b,BookingDTO.class));
+        }
+        return ls;
     }
 
     @Override
     public List<BookingDTO> getAllUserBookingByDate(int userId, Date date) {
-        return null;
+        Optional<User> isUser = userRepo.findById(userId);
+        if(isUser.isEmpty()){
+            System.out.println("user not found");
+            return null;
+        }
+        List<Booking> allByUserAndDate = bookingRepo.findAllByUserAndDate(isUser.get(), date);
+        List<BookingDTO> ls=new ArrayList<>();
+        for (Booking b: allByUserAndDate){
+            ls.add(modelMapper.map(b,BookingDTO.class));
+        }
+        return ls;
+    }
+
+    @Override
+    public String cancleBooking(int bookingId) {
+//        Optional<Booking> isBooking = bookingRepo.findById(bookingId);
+//        if(isBooking.isEmpty()) {
+//            System.out.println("booking is not availble");
+//            return null;
+//        }
+//        Booking booking = isBooking.get();
+//
+//        String bookingdate= booking.getDate().toString();
+//        String todaydate=new Date().toString();
+
+
+
+
+        return "it will be developed";
+
+
+
+
+    }
+
+    @Override
+    public List<TimeSlotDTO> getBookedTimeslot(int chargingSlotId) {
+        Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(chargingSlotId);
+        if(isSlot.isEmpty()){
+            System.out.println("slot is not present");
+            return  null;
+        }
+        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlot(isSlot.get());
+        List<TimeSlot> alltimeslot = timeslotRepo.findAll();
+
+
+        List<TimeSlotDTO>ls =new ArrayList<>();
+        for (Booking b:allByChargingSlot){
+            if(alltimeslot.contains(b.getTimeSlot())){
+                ls.add(modelMapper.map(b.getTimeSlot(),TimeSlotDTO.class));
+            }
+        }
+        return ls;
+
+    }
+
+    @Override
+    public List<TimeSlot> getAvailableTimeslot(int chargingSlotId) {
+        Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(chargingSlotId);
+        if(isSlot.isEmpty()){
+            System.out.println("slot is not present");
+            return  null;
+        }
+        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlot(isSlot.get());
+        List<TimeSlot> alltimeslot = timeslotRepo.findAll();
+
+        for (Booking b:allByChargingSlot){
+            if(alltimeslot.contains(b.getTimeSlot())){
+
+                alltimeslot.remove(b.getTimeSlot());
+            }
+        }
+        return alltimeslot;
+
     }
 }

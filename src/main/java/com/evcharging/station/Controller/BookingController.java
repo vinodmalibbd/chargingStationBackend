@@ -2,6 +2,8 @@ package com.evcharging.station.Controller;
 
 
 import com.evcharging.station.DTO.BookingDTO;
+import com.evcharging.station.DTO.TimeSlotDTO;
+import com.evcharging.station.Entity.TimeSlot;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,23 @@ public class BookingController {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
     }
     @GetMapping("/user/{userid}")
-    public ResponseEntity<List<BookingDTO>> getUserBookingTodays(){
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
+    public ResponseEntity<List<BookingDTO>> getUserBookingTodays(@PathVariable int userid){
+        List<BookingDTO> allUserBooking = bookingService.getAllUserBooking(userid);
+        return new ResponseEntity<>(allUserBooking,HttpStatusCode.valueOf(200));
     }
-    @PutMapping("/cancle/{bookingId}")
-    public ResponseEntity<BookingDTO> cancleBooking(){
-        return new ResponseEntity<>(new BookingDTO(), HttpStatusCode.valueOf(201));
+    @GetMapping("/cancle/{bookingId}")
+    public ResponseEntity<String> cancleBooking(@PathVariable int bookingId){
+        String s = bookingService.cancleBooking(bookingId);
+        return new ResponseEntity<>(s, HttpStatusCode.valueOf(201));
+    }
+    @GetMapping("/booked/{chargingslotid}")
+    public  ResponseEntity<List<TimeSlotDTO>> getBookedTimeslot(@PathVariable int chargingslotid){
+        List<TimeSlotDTO> availableTimeslot = bookingService.getBookedTimeslot(chargingslotid);
+        return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));
+    }
+    @GetMapping("/availability/{chargingslotid}")
+    public  ResponseEntity<List<TimeSlot>> getAvailableTimeslot(@PathVariable int chargingslotid){
+        List<TimeSlot> availableTimeslot = bookingService.getAvailableTimeslot(chargingslotid);
+        return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));
     }
 }

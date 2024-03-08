@@ -44,7 +44,6 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/chargingStationBackend:latest
 
-
     - name: Connect to EC2 instance
       uses: appleboy/ssh-action@master
       with:

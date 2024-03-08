@@ -52,5 +52,5 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
             echo "Connected to EC2 instance"
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chargingStationBackend:latest
-            docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/chargingStationBackend:latest
+            docker pull vm2124/chargingStationBackend:latest
+            docker run -d -p 8080:8080 vm2124/chargingStationBackend:latest

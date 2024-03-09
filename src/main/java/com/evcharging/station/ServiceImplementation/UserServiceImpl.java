@@ -3,6 +3,8 @@ package com.evcharging.station.ServiceImplementation;
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
 import com.evcharging.station.Entity.User;
+import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
+import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.UserService;
 
 import org.modelmapper.ModelMapper;
@@ -26,7 +28,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user is not available");
-            return null;
+            throw new ResourceNotFound("User","not available");
         }
         User user = isUser.get();
          return  modelMapper.map(user,UserDTO.class);
@@ -37,7 +39,7 @@ public class UserServiceImpl implements UserService {
         User byEmailId = userRepo.findByEmailId(userDTO.getEmailId());
         if(byEmailId!=null){
             System.out.println("user already exits");
-            return null;
+            throw new ResourceAlreadyExist("user","already Exist");
         }
         User mappedUser = modelMapper.map(userDTO, User.class);
         User savedUser = userRepo.save(mappedUser);

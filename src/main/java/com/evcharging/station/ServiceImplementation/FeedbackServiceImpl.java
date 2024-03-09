@@ -8,6 +8,7 @@ import com.evcharging.station.Entity.Booking;
 import com.evcharging.station.Entity.ChargingStation;
 import com.evcharging.station.Entity.FeedBack;
 import com.evcharging.station.Entity.User;
+import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.FeedbackService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         Optional<ChargingStation> isStation = chargingStationRepo.findById(chargingStationId);
         if(isStation.isEmpty()){
             System.out.println("station is not available");
-            return  null;
-
+            throw new ResourceNotFound("station","is not available");
         }
         ChargingStation chargingStation = isStation.get();
         List<FeedBack> feedbacks = chargingStation.getFeedbacks();
@@ -68,7 +68,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user is not available");
-            return  null;
+            throw new ResourceNotFound("user","not available");
         }
         User user = isUser.get();
         List<FeedBack> feedbacks = user.getFeedbacks();

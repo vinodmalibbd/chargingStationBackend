@@ -3,6 +3,8 @@ package com.evcharging.station.ServiceImplementation;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Entity.ChargingStation;
+import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
+import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.ChargingStationService;
 
 import org.modelmapper.ModelMapper;
@@ -28,7 +30,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
             System.out.println("station is not available");
-            return  null;
+            throw new ResourceNotFound("Station","not found, try again");
         }
        return modelMapper.map(isChargingStation.get(),ChargingStationDTO.class);
     }
@@ -52,8 +54,10 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         ChargingStation isExits = chargingStationRepo.findByEmailId(chargingStationDTO.getEmailId());
         if(isExits!=null){
             System.out.println("chargingstation already exits");
-            return null;
+            throw new ResourceAlreadyExist("Station","already exist, use different email");
+
         }
+
         ChargingStation chargingStation = modelMapper.map(chargingStationDTO, ChargingStation.class);
         ChargingStation saved = chargingStationRepo.save(chargingStation);
         return modelMapper.map(saved,ChargingStationDTO.class);

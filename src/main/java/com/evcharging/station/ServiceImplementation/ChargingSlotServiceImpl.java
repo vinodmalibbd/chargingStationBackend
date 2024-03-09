@@ -6,6 +6,7 @@ import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Entity.ChargingSlot;
 import com.evcharging.station.Entity.ChargingStation;
+import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.ChargingSlotService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
             System.out.println("can't add slot due to station is not exits");
-            return null;
+            throw new ResourceNotFound("station","is not exist, create station first");
         }
         ChargingStation chargingStation = isChargingStation.get();
         List<ChargingSlot> slots=chargingStation.getChargingSlots();
@@ -66,7 +67,8 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
         Optional<ChargingSlot> slotbyId = chargingSlotRepo.findById(chargingSlotId);
         if(slotbyId.isEmpty()){
             System.out.println("charging slot is not exits");
-            return null;
+            throw new ResourceNotFound("slot","is not exist,try again");
+
         }
         ChargingSlot chargingSlot = slotbyId.get();
         ChargingStation chargingStation = chargingSlot.getChargingStation();
@@ -82,7 +84,7 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
         Optional<ChargingStation> byId = chargingStationRepo.findById(chargingStationId);
         if(byId.isEmpty()){
             System.out.println("station is not present");
-            return  null;
+            throw new ResourceNotFound("station","is not presesnt, try again");
         }
 
         ChargingStation chargingStation = byId.get();

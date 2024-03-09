@@ -9,6 +9,7 @@ import com.evcharging.station.Entity.Booking;
 import com.evcharging.station.Entity.ChargingSlot;
 import com.evcharging.station.Entity.TimeSlot;
 import com.evcharging.station.Entity.User;
+import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
 import org.modelmapper.ModelMapper;
@@ -57,6 +58,7 @@ public class BookingServiceImpl implements BookingService {
         b.setStatus("confirmed");
         Booking save = bookingRepo.save(b);
 
+
         BookingDTO bdto=new BookingDTO();
         bdto.setBookingId(save.getBookingId());
 
@@ -67,6 +69,7 @@ public class BookingServiceImpl implements BookingService {
         bdto.setDate(save.getDate());
         bdto.setTimeSlot(modelMapper.map(isTime.get(), TimeSlotDTO.class));
         bdto.setStatus(save.getStatus());
+
 
         return bdto;
     }
@@ -99,7 +102,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(ChargingSlotId);
         if (isSlot.isEmpty()){
             System.out.println("not found slot");
-            return null;
+            throw new ResourceNotFound("slot", "is not found");
         }
         List<Booking> allByChargingSlotAndDate = bookingRepo.findAllByChargingSlotAndDate(isSlot.get(), date);
         List<BookingDTO> ls=new ArrayList<>();
@@ -119,7 +122,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user not found");
-            return null;
+            throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUser = bookingRepo.findAllByUser(isUser.get());
         List<BookingDTO> ls=new ArrayList<>();
@@ -134,7 +137,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user not found");
-            return null;
+            throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUserAndDate = bookingRepo.findAllByUserAndDate(isUser.get(), date);
         List<BookingDTO> ls=new ArrayList<>();

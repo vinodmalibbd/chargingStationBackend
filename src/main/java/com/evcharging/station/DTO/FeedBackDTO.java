@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FeedBackDTO {
     private int feedbackId;
-
     private String feedback;
     private int rating;
 }

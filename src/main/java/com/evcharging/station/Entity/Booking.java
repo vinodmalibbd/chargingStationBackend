@@ -28,8 +28,9 @@ public class Booking {
     @JsonIgnore
     @JoinColumn(name = "chargingSlotId")
     private ChargingSlot chargingSlot;
-    @OneToOne
-    private TimeSlot timeSlot;
+//    @OneToOne
+//    private TimeSlot timeSlot;
+    private int timeSlotId;
 
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BookingRepo extends JpaRepository<Booking,Integer> {
 
-    Booking findByDateAndChargingSlotAndTimeSlot(Date date, ChargingSlot chargingSlot, TimeSlot timeSlot);
+    Booking findByDateAndChargingSlotAndTimeSlotId(Date date, ChargingSlot chargingSlot, int timeSlotId);
     List<Booking> findAllByUserAndDate(User user,Date date);
     List<Booking> findAllByUser(User user);
     List<Booking> findAllByChargingSlotAndDate(ChargingSlot chargingSlot, Date date);

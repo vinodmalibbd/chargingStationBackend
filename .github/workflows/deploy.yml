@@ -52,5 +52,7 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
             echo "Connected to EC2 instance"
+            sudo docker stop $(sudo docker ps -aq) || true  # Stop all running containers, ignore errors if there are none
+            sudo docker rm $(sudo docker ps -aq) || true    # Remove all containers, ignore errors if there are none
             sudo docker pull vm2124/spring-boot-github-action-demo
             sudo docker run -d -p 8080:8080 vm2124/spring-boot-github-action-demo

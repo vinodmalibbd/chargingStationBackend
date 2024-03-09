@@ -34,10 +34,10 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(ResourceNotFound.class)
     public ResponseEntity<Map<String,String>> resourceNotFound(ResourceNotFound ex){
-       String resorce=ex.getResource();
+       String resource=ex.getResource();
        String msg=ex.getMessage();
        Map<String,String> mp=new HashMap<String,String>();
-       mp.put("Error",resorce+" "+msg);
+       mp.put("Error",resource+" "+msg);
        return new ResponseEntity<>(mp,HttpStatus.ALREADY_REPORTED);
 
     }

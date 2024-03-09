@@ -9,6 +9,7 @@ import com.evcharging.station.Entity.Booking;
 import com.evcharging.station.Entity.ChargingSlot;
 import com.evcharging.station.Entity.TimeSlot;
 import com.evcharging.station.Entity.User;
+import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
@@ -41,14 +42,14 @@ public class BookingServiceImpl implements BookingService {
         Optional<User> isUser = userRepo.findById(bookingRequest.getUserId());
         if(isTime.isEmpty()||isUser.isEmpty()||isSlot.isEmpty()){
             System.out.println("something went wrong");
-            return null;
+            throw new ResourceNotFound(" ","Please Fill the proper information");
         }
-        Booking exitingBooking = bookingRepo.findByDateAndChargingSlotAndTimeSlotId(bookingRequest.getDate(), isSlot.get(), bookingRequest.getTimeSlotId());
-        if(exitingBooking!=null && exitingBooking.getStatus()=="confirmed"){
+        Booking exitingBooking = bookingRepo.findByDateAndChargingSlotAndTimeSlotIdAndStatus(bookingRequest.getDate(), isSlot.get(), bookingRequest.getTimeSlotId(),"confirmed");
+        if(exitingBooking!=null ){
             System.out.println("you can't book");
-            System.out.println(exitingBooking.toString());
-            return null;
+            throw new ResourceAlreadyExist("slot","is already Occupied");
         }
+
 
         Booking b=new Booking();
         b.setUser(isUser.get());

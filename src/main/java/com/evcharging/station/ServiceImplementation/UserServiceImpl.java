@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             System.out.println("user is not available");
-            throw new ResourceNotFound("User","not available");
+            throw new ResourceNotFound("user","not available");
         }
         User user = isUser.get();
          return  modelMapper.map(user,UserDTO.class);

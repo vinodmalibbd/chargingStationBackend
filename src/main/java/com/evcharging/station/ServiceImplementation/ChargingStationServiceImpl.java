@@ -54,7 +54,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         ChargingStation isExits = chargingStationRepo.findByEmailId(chargingStationDTO.getEmailId());
         if(isExits!=null){
             System.out.println("chargingstation already exits");
-            throw new ResourceAlreadyExist("Station","already exist, use different email");
+            throw new ResourceAlreadyExist("station","already exist");
 
         }
 

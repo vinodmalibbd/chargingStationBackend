@@ -1,11 +1,13 @@
 package com.evcharging.station.DTO;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
-import lombok.Setter;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -13,6 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserDTO {
     private int userId;
+    @NotBlank(message = "First")
     private String firstName;
     private String lastName;
     private  String emailId;

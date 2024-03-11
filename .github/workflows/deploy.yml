@@ -60,7 +60,7 @@ jobs:
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-github-action-demo:latest
   deploy:
     runs-on: ubuntu-latest
-    needs: test
+    needs: docker
     steps:
       - name: Connect to EC2 instance
         uses: appleboy/ssh-action@master

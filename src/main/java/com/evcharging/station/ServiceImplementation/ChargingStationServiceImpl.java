@@ -2,7 +2,7 @@ package com.evcharging.station.ServiceImplementation;
 
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingStationDTO;
-import com.evcharging.station.Entity.ChargingStation;
+import com.evcharging.station.domain.ChargingStation;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.ChargingStationService;
@@ -53,7 +53,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
 
         ChargingStation isExits = chargingStationRepo.findByEmailId(chargingStationDTO.getEmailId());
         if(isExits!=null){
-            System.out.println("chargingstation already exits");
+           // System.out.println("chargingstation already exits");
             throw new ResourceAlreadyExist("station","already exist");
 
         }

@@ -1,4 +1,4 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.Service.AuthService;
 

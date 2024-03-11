@@ -3,7 +3,7 @@ package com.evcharging.station.Controller;
 
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
-import com.evcharging.station.Entity.TimeSlot;
+import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
 import org.springframework.beans.factory.annotation.Autowired;

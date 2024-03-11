@@ -1,4 +1,4 @@
-package com.evcharging.station.Entity;
+package com.evcharging.station.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -16,7 +16,9 @@ public class ChargingSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int slotId;
+    @Column(nullable = false,name = "RatePerHour")
     private double pricePerHour;
+    @Column(nullable = false,name = "Availability")
     private boolean available;
     @ManyToOne
     @JoinColumn(name = "chargingStation")

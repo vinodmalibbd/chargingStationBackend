@@ -2,7 +2,7 @@ package com.evcharging.station.ServiceImplementation;
 
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
-import com.evcharging.station.Entity.User;
+import com.evcharging.station.domain.User;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.UserService;

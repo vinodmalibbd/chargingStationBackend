@@ -1,7 +1,6 @@
 package com.evcharging.station.DTO;
 
 
-import com.evcharging.station.Entity.ChargingStation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

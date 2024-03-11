@@ -2,7 +2,7 @@ package com.evcharging.station.ServiceImplementation;
 
 import com.evcharging.station.DAO.TimeslotRepo;
 import com.evcharging.station.DTO.TimeSlotDTO;
-import com.evcharging.station.Entity.TimeSlot;
+import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Service.TimeslotService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

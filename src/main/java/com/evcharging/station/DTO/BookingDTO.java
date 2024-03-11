@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-
-import java.util.Date;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookingDTO {
+
     private int bookingId;
     private Date date;
     private UserDTO user;

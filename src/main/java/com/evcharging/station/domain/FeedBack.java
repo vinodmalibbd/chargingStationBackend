@@ -1,4 +1,4 @@
-package com.evcharging.station.Entity;
+package com.evcharging.station.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -12,8 +12,9 @@ public class FeedBack {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int feedbackId;
-
+    @Column(nullable = false,length =150,name = "Description")
     private String feedback;
+    @Column(nullable = false,name = "Rating")
     private int rating;
     @ManyToOne
     @JsonIgnore

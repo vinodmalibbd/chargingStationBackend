@@ -5,10 +5,7 @@ import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.DTO.UserDTO;
-import com.evcharging.station.Entity.Booking;
-import com.evcharging.station.Entity.ChargingSlot;
-import com.evcharging.station.Entity.TimeSlot;
-import com.evcharging.station.Entity.User;
+import com.evcharging.station.domain.*;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.BookingService;
@@ -35,22 +32,21 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDTO createBooking(BookingRequest bookingRequest) {
+
         Optional<TimeSlot> isTime = timeslotRepo.findById(bookingRequest.getTimeSlotId());
         Optional<ChargingSlot>isSlot = chargingSlotRepo.findById(bookingRequest.getChargingSlotId());
-
-
         Optional<User> isUser = userRepo.findById(bookingRequest.getUserId());
+//        System.out.println(isTime.get().getTimeSlotId());
+//        System.out.println(isSlot.get().getSlotId());
+//        System.out.println(isUser.get().getUserId());
+
         if(isTime.isEmpty()||isUser.isEmpty()||isSlot.isEmpty()){
-            System.out.println("something went wrong");
-            throw new ResourceNotFound(" ","Please Fill the proper information");
+            throw new ResourceNotFound(" ","All Fields are required ,fill all fields");
         }
         Booking exitingBooking = bookingRepo.findByDateAndChargingSlotAndTimeSlotIdAndStatus(bookingRequest.getDate(), isSlot.get(), bookingRequest.getTimeSlotId(),"confirmed");
-        if(exitingBooking!=null ){
-            System.out.println("you can't book");
-            throw new ResourceAlreadyExist("slot","is already Occupied");
+        if(exitingBooking!=null ) {
+            throw new ResourceAlreadyExist("slot", "is already Occupied");
         }
-
-
         Booking b=new Booking();
         b.setUser(isUser.get());
         b.setChargingSlot(isSlot.get());
@@ -85,8 +81,7 @@ public class BookingServiceImpl implements BookingService {
 
         Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(ChargingSlotId);
         if(isSlot.isEmpty()) {
-            System.out.println("slot is not available");
-            return null;
+            throw new ResourceNotFound("slot"," is not Available");
         }
 
         List<Booking> allByChargingSlotAndDate = bookingRepo.findAllByChargingSlot(isSlot.get());
@@ -102,7 +97,6 @@ public class BookingServiceImpl implements BookingService {
 
         Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(ChargingSlotId);
         if (isSlot.isEmpty()){
-            System.out.println("not found slot");
             throw new ResourceNotFound("slot", "is not found");
         }
         List<Booking> allByChargingSlotAndDate = bookingRepo.findAllByChargingSlotAndDate(isSlot.get(), date);
@@ -122,7 +116,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDTO> getAllUserBooking(int userId) {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
-            System.out.println("user not found");
             throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUser = bookingRepo.findAllByUser(isUser.get());
@@ -137,7 +130,6 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDTO> getAllUserBookingByDate(int userId, Date date) {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
-            System.out.println("user not found");
             throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUserAndDate = bookingRepo.findAllByUserAndDate(isUser.get(), date);
@@ -152,9 +144,7 @@ public class BookingServiceImpl implements BookingService {
     public String cancleBooking(int bookingId) {
         Optional<Booking> isBooking = bookingRepo.findById(bookingId);
         if(isBooking.isEmpty()){
-            System.out.println("booking is not availble");
-
-            return null;
+            throw new ResourceNotFound("booking","not available");
         }
         Booking booking = isBooking.get();
         Date todayDate=new Date();
@@ -162,8 +152,7 @@ public class BookingServiceImpl implements BookingService {
 
         Optional<TimeSlot> isTime = timeslotRepo.findById(timeSlotId);
         if(isTime.isEmpty()){
-            System.out.println("time slot is not available");
-            return null;
+            throw new ResourceNotFound("timeSlot"," not Available");
         }
 
         if(booking.getDate().compareTo(todayDate)>0){
@@ -215,7 +204,7 @@ public class BookingServiceImpl implements BookingService {
         Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(chargingSlotId);
         if(isSlot.isEmpty()){
             System.out.println("slot is not present");
-            return  null;
+            throw new ResourceNotFound("Slot","not Present");
         }
         List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlot(isSlot.get());
         List<TimeSlot> alltimeslot = timeslotRepo.findAll();

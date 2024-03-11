@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimeSlotDTO {
-    private int stationId;
+    private int timeSlotId;
     private int startTime;
     private int endTime;
 

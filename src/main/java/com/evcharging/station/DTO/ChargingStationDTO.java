@@ -19,5 +19,7 @@ public class ChargingStationDTO {
     private double longitude;
     private double latitude;
     private String emailId;
+    private int openTime;
+    private int closeTime;
     private List<ChargingSlotDTO> chargingSlotDTOS;
 }

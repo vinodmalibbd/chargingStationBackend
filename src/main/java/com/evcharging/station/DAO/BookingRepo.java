@@ -1,6 +1,6 @@
 package com.evcharging.station.DAO;
 
-import com.evcharging.station.Entity.*;
+import com.evcharging.station.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;

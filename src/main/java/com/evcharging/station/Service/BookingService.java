@@ -2,7 +2,7 @@ package com.evcharging.station.Service;
 
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
-import com.evcharging.station.Entity.TimeSlot;
+import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Templates.BookingRequest;
 
 import java.util.Date;

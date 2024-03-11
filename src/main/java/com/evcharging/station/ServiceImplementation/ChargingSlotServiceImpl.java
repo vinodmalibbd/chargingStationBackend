@@ -4,8 +4,8 @@ import com.evcharging.station.DAO.ChargingSlotRepo;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
-import com.evcharging.station.Entity.ChargingSlot;
-import com.evcharging.station.Entity.ChargingStation;
+import com.evcharging.station.domain.ChargingSlot;
+import com.evcharging.station.domain.ChargingStation;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.ChargingSlotService;
 import org.modelmapper.ModelMapper;
@@ -31,7 +31,7 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
     public ChargingStationDTO addChargingSlot(ChargingSlotDTO chargingSlotDTO, int chargingStationId) {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
         if(isChargingStation.isEmpty()){
-            System.out.println("can't add slot due to station is not exits");
+           // System.out.println("can't add slot due to station is not exits");
             throw new ResourceNotFound("station","is not exist, create station first");
         }
         ChargingStation chargingStation = isChargingStation.get();

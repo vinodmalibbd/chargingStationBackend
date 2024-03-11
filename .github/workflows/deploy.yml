@@ -41,8 +41,19 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-github-action-demo:latest
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: github-action-artifact
+      - name: Run unit tests
+        run: mvn test
   deploy:
     runs-on: ubuntu-latest
+    needs: test
     steps:
       - name: Connect to EC2 instance
         uses: appleboy/ssh-action@master

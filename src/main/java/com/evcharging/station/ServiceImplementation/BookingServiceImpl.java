@@ -47,28 +47,31 @@ public class BookingServiceImpl implements BookingService {
         if(exitingBooking!=null ) {
             throw new ResourceAlreadyExist("slot", "is already Occupied");
         }
-        Booking b=new Booking();
-        b.setUser(isUser.get());
-        b.setChargingSlot(isSlot.get());
-        b.setTimeSlotId(bookingRequest.getTimeSlotId());
-        b.setDate(bookingRequest.getDate());
-        b.setStatus("confirmed");
-        Booking save = bookingRepo.save(b);
+        int openTime = isSlot.get().getChargingStation().getOpenTime();
+        int closeTime = isSlot.get().getChargingStation().getCloseTime();
+        int timeSlotId = isTime.get().getTimeSlotId();
 
+        if(openTime<timeSlotId && timeSlotId<=closeTime) {
 
-        BookingDTO bdto=new BookingDTO();
-        bdto.setBookingId(save.getBookingId());
-
-
-
-        bdto.setUser(modelMapper.map(save.getUser(), UserDTO.class));
-        bdto.setChargingSlot(modelMapper.map(save.getChargingSlot(), ChargingSlotDTO.class));
-        bdto.setDate(save.getDate());
-        bdto.setTimeSlot(modelMapper.map(isTime.get(), TimeSlotDTO.class));
-        bdto.setStatus(save.getStatus());
-
-
-        return bdto;
+            Booking b = new Booking();
+            b.setUser(isUser.get());
+            b.setChargingSlot(isSlot.get());
+            b.setTimeSlotId(bookingRequest.getTimeSlotId());
+            b.setDate(bookingRequest.getDate());
+            b.setStatus("confirmed");
+            Booking save = bookingRepo.save(b);
+            BookingDTO bdto = new BookingDTO();
+            bdto.setBookingId(save.getBookingId());
+            bdto.setUser(modelMapper.map(save.getUser(), UserDTO.class));
+            bdto.setChargingSlot(modelMapper.map(save.getChargingSlot(), ChargingSlotDTO.class));
+            bdto.setDate(save.getDate());
+            bdto.setTimeSlot(modelMapper.map(isTime.get(), TimeSlotDTO.class));
+            bdto.setStatus(save.getStatus());
+            return bdto;
+        }
+        else{
+            throw new ResourceNotFound("TimeSlot","is not in the working hours");
+        }
     }
 
     @Override
@@ -88,6 +91,8 @@ public class BookingServiceImpl implements BookingService {
         List<BookingDTO> bookingDTOS=new ArrayList<>();
         for (Booking b: allByChargingSlotAndDate){
             bookingDTOS.add(modelMapper.map(b, BookingDTO.class));
+
+
         }
         return bookingDTOS;
     }

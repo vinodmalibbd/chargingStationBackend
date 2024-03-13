@@ -55,4 +55,4 @@ jobs:
             sudo docker stop evstation-backend-develop || true # Stop all running containers, ignore errors if there are none
             sudo docker rm evstation-backend-develop || true    # Remove all containers, ignore errors if there are none
             sudo docker pull vm2124/evstation-backend-develop
-            sudo docker run -d -p 8080:8080 vm2124/evstation-backend-develop
+            sudo docker run -d -p 8082:8082 vm2124/evstation-backend-develop

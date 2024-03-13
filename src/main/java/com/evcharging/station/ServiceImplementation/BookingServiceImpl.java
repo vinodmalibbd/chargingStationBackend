@@ -92,7 +92,6 @@ public class BookingServiceImpl implements BookingService {
         for (Booking b: allByChargingSlotAndDate){
             bookingDTOS.add(modelMapper.map(b, BookingDTO.class));
 
-
         }
         return bookingDTOS;
     }

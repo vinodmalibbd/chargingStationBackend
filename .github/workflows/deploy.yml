@@ -40,7 +40,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/evstation-backend-develop:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/spring-boot-github-action-demo:latest
 
 
       - name: Connect to EC2 instance
@@ -52,7 +52,7 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
             echo "Connected to EC2 instance"
-            sudo docker stop evstation-backend-develop || true # Stop all running containers, ignore errors if there are none
-            sudo docker rm evstation-backend-develop || true    # Remove all containers, ignore errors if there are none
-            sudo docker pull vm2124/evstation-backend-develop
-            sudo docker run -d -p 8082:8082 vm2124/evstation-backend-develop
+            sudo docker stop $(sudo docker ps -aq) || true  # Stop all running containers, ignore errors if there are none
+            sudo docker rm $(sudo docker ps -aq) || true    # Remove all containers, ignore errors if there are none
+            sudo docker pull vm2124/spring-boot-github-action-demo
+            sudo docker run -d -p 8082:8082 vm2124/spring-boot-github-action-demo

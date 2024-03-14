@@ -24,6 +24,11 @@ public class TimeSlotController {
         return  new ResponseEntity<>(allTimeSlot, HttpStatusCode.valueOf(200));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<TimeSlotDTO>> getAllTimeSlot(){
+        List<TimeSlotDTO> allTimeSlot = timeslotService.getAllTimeSlot();
+        return  new ResponseEntity<>(allTimeSlot, HttpStatusCode.valueOf(200));
+    }
 
 
 

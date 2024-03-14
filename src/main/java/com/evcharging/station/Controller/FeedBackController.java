@@ -2,6 +2,7 @@ package com.evcharging.station.Controller;
 
 import com.evcharging.station.DTO.FeedBackDTO;
 import com.evcharging.station.Service.FeedbackService;
+import com.evcharging.station.Templates.ResponseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +33,10 @@ public class FeedBackController {
     public  ResponseEntity<List<FeedBackDTO>> getAllFeedBackUser(@PathVariable int userId){
         List<FeedBackDTO> allFeedbackOfStation = feedbackService.getAllFeedbackOfUser(userId);
         return new ResponseEntity<>(allFeedbackOfStation,HttpStatusCode.valueOf(200));
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseTemplate> deleteFeedback(@PathVariable int id){
+        ResponseTemplate responseTemplate = feedbackService.deleteFeedback(id);
+        return  new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
     }
 }

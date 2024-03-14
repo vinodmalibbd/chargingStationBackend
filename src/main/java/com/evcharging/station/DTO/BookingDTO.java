@@ -14,10 +14,11 @@ import java.util.Date;
 public class BookingDTO {
     private int bookingId;
 
+
     private Date date;
     private UserDTO user;
     private ChargingSlotDTO chargingSlot;
     private TimeSlotDTO timeSlot;
-    @Column(nullable = false,length = 25)
+
     private String status;
 }

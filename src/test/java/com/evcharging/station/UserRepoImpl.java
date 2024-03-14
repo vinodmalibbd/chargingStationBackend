@@ -3,7 +3,7 @@ package com.evcharging.station;
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
-import com.evcharging.station.ServiceImplementation.UserServiceImpl;
+import com.evcharging.station.Service.impl.UserServiceImpl;
 import com.evcharging.station.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

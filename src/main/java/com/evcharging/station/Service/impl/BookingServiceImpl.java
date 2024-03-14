@@ -1,4 +1,4 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.*;
 import com.evcharging.station.DTO.BookingDTO;

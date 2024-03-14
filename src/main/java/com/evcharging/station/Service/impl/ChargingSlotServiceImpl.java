@@ -1,9 +1,10 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.ChargingSlotRepo;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.Templates.ResponseTemplate;
 import com.evcharging.station.domain.ChargingSlot;
 import com.evcharging.station.domain.ChargingStation;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
@@ -97,6 +98,15 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
         }
 
         return chargingSlotDTOS;
+    }
+    @Override
+    public ResponseTemplate deleteSlot(int id){
+        Optional<ChargingSlot> byId = chargingSlotRepo.findById(id);
+        if(byId.isEmpty()){
+            throw  new ResourceNotFound("slot ","not found");
+        }
+        chargingSlotRepo.delete(byId.get());
+        return  new ResponseTemplate("slot deleted successfully",true);
     }
 
 

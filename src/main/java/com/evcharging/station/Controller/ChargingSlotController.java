@@ -3,6 +3,7 @@ package com.evcharging.station.Controller;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Service.ChargingSlotService;
+import com.evcharging.station.Templates.ResponseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,11 @@ public class ChargingSlotController {
     public  ResponseEntity<List<ChargingSlotDTO>> getAllSlotOfStation(@PathVariable int chargingStationId){
         List<ChargingSlotDTO> allChargingSlotByChargingId = chargingSlotService.getAllChargingSlotByChargingId(chargingStationId);
         return  new ResponseEntity<>(allChargingSlotByChargingId,HttpStatusCode.valueOf(200));
+    }
+    @DeleteMapping("/{Id}")
+    public ResponseEntity<ResponseTemplate> deleteSlot(@PathVariable int Id){
+        ResponseTemplate responseTemplate = chargingSlotService.deleteSlot(Id);
+        return new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
     }
 
 }

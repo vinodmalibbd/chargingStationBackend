@@ -1,7 +1,8 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.Templates.ResponseTemplate;
 import com.evcharging.station.domain.ChargingStation;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
@@ -62,5 +63,15 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         ChargingStation saved = chargingStationRepo.save(chargingStation);
         return modelMapper.map(saved,ChargingStationDTO.class);
 
+    }
+
+    @Override
+    public ResponseTemplate deleteChargingStation(int id) {
+        Optional<ChargingStation>byid=chargingStationRepo.findById(id);
+        if(byid.isEmpty()){
+            throw  new ResourceNotFound("charging station","not found");
+        }
+        chargingStationRepo.delete(byid.get());
+        return new ResponseTemplate("charging slot deleted",true);
     }
 }

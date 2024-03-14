@@ -1,9 +1,10 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DAO.FeedbackRepo;
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.FeedBackDTO;
+import com.evcharging.station.Templates.ResponseTemplate;
 import com.evcharging.station.domain.ChargingStation;
 import com.evcharging.station.domain.FeedBack;
 import com.evcharging.station.domain.User;
@@ -77,5 +78,16 @@ public class FeedbackServiceImpl implements FeedbackService {
             feedBackDTOS.add(modelMapper.map(f,FeedBackDTO.class));
         }
         return feedBackDTOS;
+    }
+
+    @Override
+    public ResponseTemplate deleteFeedback(int id) {
+        Optional<FeedBack> byId = feedbackRepo.findById(id);
+        if(byId.isEmpty()){
+            throw  new ResourceNotFound("feedback ","not found");
+        }
+        feedbackRepo.delete(byId.get());
+
+        return new ResponseTemplate("feedback deleted successfully",false);
     }
 }

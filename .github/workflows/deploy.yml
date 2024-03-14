@@ -52,6 +52,8 @@ jobs:
           port: ${{ secrets.EC2_SSH_PORT }}
           script: |
             echo "Connected to EC2 instance"
+            sudo docker ps -q --filter "publish=8082" | xargs -r sudo docker stop
+            sudo docker ps -q --filter "publish=8082" | xargs -r sudo docker rm
             sudo docker stop evstation-backend-main || true # Stop all running containers, ignore errors if there are none
             sudo docker rm evstation-backend-main || true    # Remove all containers, ignore errors if there are none
             sudo docker pull vm2124/evstation-backend-main

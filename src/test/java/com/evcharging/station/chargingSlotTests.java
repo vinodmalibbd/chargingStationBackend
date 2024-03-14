@@ -3,7 +3,7 @@
 //import com.evcharging.station.DAO.ChargingSlotRepo;
 //import com.evcharging.station.DTO.ChargingSlotDTO;
 //import com.evcharging.station.DTO.ChargingStationDTO;
-//import com.evcharging.station.ServiceImplementation.ChargingSlotServiceImpl;
+//import com.evcharging.station.Service.impl.ChargingSlotServiceImpl;
 //import com.evcharging.station.domain.ChargingSlot;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;

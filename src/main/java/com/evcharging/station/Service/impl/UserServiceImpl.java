@@ -1,7 +1,8 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
+import com.evcharging.station.Templates.ResponseTemplate;
 import com.evcharging.station.domain.User;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
@@ -55,5 +56,15 @@ public class UserServiceImpl implements UserService {
             allUserDTOs.add(modelMapper.map(u,UserDTO.class));
         }
         return allUserDTOs;
+    }
+
+    @Override
+    public ResponseTemplate deleteUser(int Id) {
+        Optional<User> u= userRepo.findById(Id);
+        if(u.isEmpty()){
+            throw new ResourceNotFound("user","not found");
+        }
+        userRepo.deleteById(Id);
+        return  new ResponseTemplate("User deleted successfully",true);
     }
 }

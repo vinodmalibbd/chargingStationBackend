@@ -1,4 +1,4 @@
-package com.evcharging.station.ServiceImplementation;
+package com.evcharging.station.Service.impl;
 
 import com.evcharging.station.DAO.*;
 import com.evcharging.station.DTO.BookingDTO;
@@ -91,7 +91,6 @@ public class BookingServiceImpl implements BookingService {
         List<BookingDTO> bookingDTOS=new ArrayList<>();
         for (Booking b: allByChargingSlotAndDate){
             bookingDTOS.add(modelMapper.map(b, BookingDTO.class));
-
 
         }
         return bookingDTOS;

@@ -1,0 +1,58 @@
+@startuml Booking
+actor User #lightgreen
+
+participant "BookingController" as BookingController
+participant "BookingService" as BookingService
+participant "UserRepository" as UserRepository
+participant "ChargingSlotRepository" as ChargingSlotRepository
+participant "TimeSlotRepository" as TimeSlotRepository
+participant "BookingRepository" as BookingRepository
+participant "ExceptionHandler" as ExceptionHandler
+
+User -> BookingController: POST /booking/create
+BookingController-> BookingService: createBooking(BookingRequest)
+BookingService-> UserRepository: findById(BookingRequest.userId)
+alt User Found
+    UserRepository-->>BookingService :user found
+else #pink Failure
+    UserRepository-->> BookingService :user not found
+    BookingService -> ExceptionHandler: ResourceNotFound('user')
+    ExceptionHandler -->> BookingService : ResponseEntity<ErrorResponse>
+    BookingService -->> BookingController: ResponseEntity<ErrorResponse> 
+    BookingController-->> User: ResponseEntity<ErrorResponse>
+end
+alt chargingSlot Found
+    BookingService -->> ChargingSlotRepository: findById(BookingRequest.chargingSlotId)
+    ChargingSlotRepository-->>BookingService : chargingSlot Found
+else #pink chargingSlot not Found 
+    ChargingSlotRepository-->>BookingService : chargingSlot not Found 
+    BookingService -> ExceptionHandler: ResourceNotFound('chargingslot')
+    ExceptionHandler -->> BookingService : ResponseEntity<ErrorResponse>
+    BookingService -->> BookingController: ResponseEntity<ErrorResponse> 
+    BookingController-->> User: ResponseEntity<ErrorResponse>
+end
+alt TimeSlot Found
+    BookingService -->> TimeSlotRepository: findById(BookingRequest.timeSlotId)
+    TimeSlotRepository -->> BookingService :TimeSlot found 
+else #pink TimeSlot not Found 
+    TimeSlotRepository -->>BookingService : TimeSlot not Found 
+    BookingService -> ExceptionHandler: ResourceNotFound('TimeSlot')
+    ExceptionHandler -->> BookingService : ResponseEntity<ErrorResponse>
+    BookingService -->> BookingController: ResponseEntity<ErrorResponse> 
+    BookingController-->> User: ResponseEntity<ErrorResponse>
+end
+alt #lightgreen Booking Not Exits
+    BookingService -> BookingRepository:checkExitingBooking(BookingRequest.date,chargingSlot,timeslot,status='confirmed')
+    BookingRepository -->> BookingService :Booking Not Exits
+    BookingService -> BookingRepository : save(Booking)
+    BookingRepository -->> BookingService : Booking Created 
+    BookingService -->> BookingController: BookingDTO
+    BookingController -->> User :BookingDTO
+else #pink Booking Already Exits
+    BookingRepository-->>BookingService : Exiting Booking Found 
+    BookingService -> ExceptionHandler: ResourceAlreadyExits('Booking')
+    ExceptionHandler -->> BookingService : ResponseEntity<ErrorResponse>
+    BookingService -->> BookingController: ResponseEntity<ErrorResponse> 
+    BookingController-->> User: ResponseEntity<ErrorResponse>
+end
+@enduml

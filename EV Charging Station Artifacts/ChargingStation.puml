@@ -1,0 +1,70 @@
+@startuml chargingStation
+actor User #lightgreen
+
+participant "ChargingStationController" as Controller
+participant "ChargingStationService" as Service
+participant "ChargingStationRepository" as Repository
+participant "ExceptionHandler" as ExceptionHandler
+
+User -> Controller: POST /chargingstation/register
+Controller -> Service: createChargingStation(ChargingStationDTO)
+Service -> Repository: findByEmail(charginStationDTO.getEmail());
+alt #lightgreen Success
+    Repository -->> Service: chargingStation not found
+    Service -> Repository: save(ChargingStation)
+    Repository -->> Service: Charging station saved
+    Service -->> Controller: ChargingStationDTO
+    Controller -->> User: ResponseEntity<ChargingStationDTO> 
+else #pink ChargingStation Already Exits
+    Repository -->> Service: chargingStation Already exits
+    Service -> ExceptionHandler: ResourceAlreadyExits('ChargingStation')
+    ExceptionHandler -->> Service: ResponseEntity<ErrorResponse>
+    Service -->> Controller: ResponseEntity<ErrorResponse> 
+    Controller -->> User: ResponseEntity<ErrorResponse> 
+end
+
+User -> Controller: GET /chargingstation/{chargingStationId}
+Controller -> Service: getChargingStationById(chargingStationId)
+Service -> Repository: findById(chargingStationId)
+alt #lightgreen Success
+    Repository -->> Service: Charging station found
+    Service -->> Controller: ChargingStationDTO
+    Controller -->> User: ResponseEntity<ChargingStationDTO> 
+else #pink Not Found
+    Repository -->> Service: Charging station not found
+    Service -> ExceptionHandler: ResourceNotFound('ChargingStation')
+    ExceptionHandler -->> Service: ResponseEntity<ErrorResponse>
+    Service -->> Controller: ResponseEntity<ErrorResponse> 
+    Controller -->> User: ResponseEntity<ErrorResponse> 
+end
+
+User -> Controller: GET /chargingstation/all
+Controller -> Service: getAllChargingStation()
+Service -> Repository: findAll()
+Service -> ApiResponse: Generate response
+alt #lightgreen Success
+    Repository -->> Service: List<ChargingStation> found
+    Service -->> Controller: List<ChargingStationDTO>
+    Controller -->> User: ResponseEntity<List<ChargingStationDTO>> 
+else #pink Internal Server Error
+    Service -> ExceptionHandler: handleInternalServerError
+    ExceptionHandler -->> Service: ResponseEntity<ErrorResponse>
+    Service -->> Controller: ResponseEntity<ErrorResponse> 
+    Controller -->> User: ResponseEntity<ErrorResponse> 
+end
+
+User -> Controller: DELETE /chargingstation/{chargingStationId}
+Controller -> Service: getChargingStationById(chargingStationId)
+Service -> Repository: findById(chargingStationId)
+alt #lightgreen Success
+    Repository -->> Service: Charging station found
+    Service -->> Controller: ChargingStationDTO
+    Controller -->> User: ResponseEntity<ChargingStationDTO> 
+else #pink Not Found
+    Repository -->> Service: Charging station not found
+    Service -> ExceptionHandler: ResourceNotFound('ChargingStation')
+    ExceptionHandler -->> Service: ResponseEntity<ErrorResponse>
+    Service -->> Controller: ResponseEntity<ErrorResponse> 
+    Controller -->> User: ResponseEntity<ErrorResponse> 
+end
+@enduml

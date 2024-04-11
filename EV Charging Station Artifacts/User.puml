@@ -1,0 +1,71 @@
+@startuml User
+actor User #lightgreen
+
+    participant "UserController" as UserController
+    participant "UserService" as UserService
+    participant "UserRepository" as UserRepository
+    participant "ExceptionHandler" as ExceptionHandler
+
+    User -> UserController: POST /user/register
+    UserController -> UserService: createUser(UserDTO)
+    UserService -> UserRepository: findByEmail(UserDTO.getEmail())
+    alt #lightgreen User does not exist
+            UserRepository -->> UserService: User not found
+            UserService -> UserRepository: save(User)
+            UserRepository -->> UserService: User saved
+            UserService -->> UserController: UserDTO
+            UserController -->> User: ResponseEntity<UserDTO>
+    else #lightpink User already exists
+            UserRepository -->> UserService: User found
+            UserService -> ExceptionHandler: ResourceAlreadyExists('user')
+            ExceptionHandler -->> UserService: ResponseEntity<ErrorResponse>
+            UserService -->> UserController: ResponseEntity<ErrorResponse>
+            UserController -->> User: ResponseEntity<ErrorResponse>
+    end
+
+
+User -> UserController: GET /user/{userId}
+UserController -> UserService: getUserById(userId)
+UserService -> UserRepository: findById(userId)
+alt #lightgreen Success
+    UserRepository -->> UserService: User found
+    UserService -->> UserController: UserDTO
+    UserController -->> User: ResponseEntity<UserDTO> 
+else #pink Not Found
+    UserRepository -->> UserService: User not found
+    UserService -> ExceptionHandler: ResourceNotFound('user')
+    ExceptionHandler -->> UserService: ResponseEntity<ErrorResponse>
+    UserService -->> UserController: ResponseEntity<ErrorResponse>
+    UserController -->> User: ResponseEntity<ErrorResponse>
+end
+
+User -> UserController: DELETE /user/{userId}
+UserController -> UserService: getUserById(userId)
+UserService -> UserRepository: findById(userId)
+alt #lightgreen Success
+    UserRepository -->> UserService: User found
+    UserService -->> UserController: UserDTO
+    UserController -->> User: ResponseEntity<UserDTO> 
+else #pink Not Found
+    UserRepository -->> UserService: User not found
+    UserService -> ExceptionHandler: ResourceNotFound('user')
+    ExceptionHandler -->> UserService: ResponseEntity<ErrorResponse>
+    UserService -->> UserController: ResponseEntity<ErrorResponse>
+    UserController -->> User: ResponseEntity<ErrorResponse>
+end
+
+User -> UserController: GET /user/all
+UserController -> UserService: getAllUser()
+UserService -> UserRepository: findAll()
+UserService -> CommonApiResponse: Generate response
+alt #lightgreen Success
+    UserRepository -->> UserService: List<User> found
+    UserService -->> UserController: List<UserDTO>
+    UserController -->> User: ResponseEntity<List<UserDTO>> 
+else #pink Internal Server Error
+    UserService -> ExceptionHandler: handleInternalServerError
+    ExceptionHandler -->> UserService: ResponseEntity<ErrorResponse>
+    UserService -->> UserController: ResponseEntity<ErrorResponse>
+    UserController -->> User: ResponseEntity<ErrorResponse>
+end
+@enduml

@@ -1,0 +1,73 @@
+@startuml chargingSlot
+actor User #lightgreen
+
+participant "ChargingSlotController" as ChargingSlotController
+participant "ChargingSlotService" as ChargingSlotService
+participant "ChargingStationRepo" as ChargingStationRepo
+participant "ChargingSlotRepo" as ChargingSlotRepo
+participant "ExceptionHandler" as ExceptionHandler
+
+User -> ChargingSlotController: POST /chargingslot/addslot/{chargingStationId} (chargingSlotDTO)
+ChargingSlotController -> ChargingSlotService: addChargingSlot(chargingSlotDTO,chargingStationId)
+ChargingSlotService -> ChargingStationRepo:findById(chargingStationId)
+alt #pink ChargingStation Not Found
+    ChargingStationRepo-->> ChargingSlotService: chargingStation Is not found
+    ChargingSlotService -> ExceptionHandler: ResourceNotFound('ChargingStation')
+    ExceptionHandler -->> ChargingSlotService: ResponseEntity<ErrorResponse>
+    ChargingSlotService -->> ChargingSlotController: ResponseEntity<ErrorResponse> 
+    ChargingSlotController -->> User: ResponseEntity<ErrorResponse> 
+else #lightgreen ChargingStation Not Found
+    ChargingStationRepo-->> ChargingSlotService: chargingStation Is found
+    ChargingSlotService -> ChargingSlotRepo: save(chargingSlot)
+    ChargingSlotRepo-->> ChargingSlotService: chargingSlotDTO
+    ChargingSlotService-->> ChargingSlotController: chargingSlotDTO
+    ChargingSlotController -->> User : chargingSlotDTO
+end
+
+User -> ChargingSlotController: GET /chargingslot/all/{chargingStationId}
+ChargingSlotController -> ChargingSlotService: getAllChargingStationSlots(chargingStationId)
+ChargingSlotService -> ChargingStationRepo:findById(chargingStationId)
+alt #pink ChargingStation Not Found
+    ChargingStationRepo-->> ChargingSlotService: chargingStation Is not found
+    ChargingSlotService -> ExceptionHandler: ResourceNotFound('ChargingStation')
+    ExceptionHandler -->> ChargingSlotService: ResponseEntity<ErrorResponse>
+    ChargingSlotService -->> ChargingSlotController: ResponseEntity<ErrorResponse> 
+    ChargingSlotController -->> User: ResponseEntity<ErrorResponse> 
+else #lightgreen ChargingStation Not Found
+    ChargingStationRepo-->> ChargingSlotService: chargingStation Is found
+    ChargingSlotService -> ChargingSlotRepo: findAll(chargingStationId)
+    ChargingSlotRepo-->> ChargingSlotService: List<chargingSlotDTO>
+    ChargingSlotService-->> ChargingSlotController: List<chargingSlotDTO>
+    ChargingSlotController -->> User : List<chargingSlotDTO>
+end
+
+User -> ChargingSlotController: GET /chargingslot/{chargingSlotId}
+ChargingSlotController -> ChargingSlotService: getChargingSlot(chargingSlotId)
+ChargingSlotService -> ChargingSlotRepo: findById(chargingSlotId)
+alt #lightgreen Success
+    ChargingSlotRepo -->> ChargingSlotService: ChargingSlot found
+    ChargingSlotService -->> ChargingSlotController: ChargingSlotDTO
+    ChargingSlotController -->> User: ChargingSlotDTO
+else #pink Not Found
+    ChargingSlotRepo -->> ChargingSlotService: ChargingSlot not found
+    ChargingSlotService -> ExceptionHandler: ResourceNotFound('ChargingSlot')
+    ExceptionHandler -->> ChargingSlotService: ResponseEntity<ErrorResponse>
+    ChargingSlotService -->> ChargingSlotController: ResponseEntity<ErrorResponse> 
+    ChargingSlotController -->> User: ResponseEntity<ErrorResponse> 
+end
+
+User -> ChargingSlotController: DELETE /chargingslot/{chargingSlotId}
+ChargingSlotController -> ChargingSlotService: getChargingSlot(chargingSlotId)
+ChargingSlotService -> ChargingSlotRepo: findById(chargingSlotId)
+alt #lightgreen Success
+    ChargingSlotRepo -->> ChargingSlotService: ChargingSlot found
+    ChargingSlotService -->> ChargingSlotController: ChargingSlotDTO
+    ChargingSlotController -->> User: ChargingSlotDTO
+else #pink Not Found
+    ChargingSlotRepo -->> ChargingSlotService: ChargingSlot not found
+    ChargingSlotService -> ExceptionHandler: ResourceNotFound('ChargingSlot')
+    ExceptionHandler -->> ChargingSlotService: ResponseEntity<ErrorResponse>
+    ChargingSlotService -->> ChargingSlotController: ResponseEntity<ErrorResponse> 
+    ChargingSlotController -->> User: ResponseEntity<ErrorResponse> 
+end
+@enduml

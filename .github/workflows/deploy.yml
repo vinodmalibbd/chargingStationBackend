@@ -5,13 +5,6 @@ on:
     branches: [ "develop" ]
 
 jobs:
-  delete-artifacts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/delete-artifact@v2
-        with:
-          token: $
-          expire-in: 7days # Set this to 0 to delete all artifacts
   build:
 
     runs-on: ubuntu-latest
@@ -29,8 +22,8 @@ jobs:
           mvn clean install
           mkdir artifacts && cp target/*.jar artifacts
           cd artifacts && ls
-      - name: Save artifact
-        uses: actions/delete-artifact@v2
+      - name: delete artifact
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: github-action-artifact
           path: artifacts

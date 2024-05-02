@@ -8,7 +8,7 @@ jobs:
   delete-artifacts:
     runs-on: ubuntu-latest
     steps:
-      - uses: kolpav/purge-artifacts-action@v1
+      - uses: actions/delete-artifact@v2
         with:
           token: $
           expire-in: 7days # Set this to 0 to delete all artifacts
@@ -29,6 +29,11 @@ jobs:
           mvn clean install
           mkdir artifacts && cp target/*.jar artifacts
           cd artifacts && ls
+      - name: Save artifact
+        uses: actions/delete-artifact@v2
+        with:
+          name: github-action-artifact
+          path: artifacts
       - name: Save artifact
         uses: actions/upload-artifact@v2
         with:

@@ -45,7 +45,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/evstation-backend-develop:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/evstation-backend-main:latest
 
 
       - name: Connect to EC2 instance

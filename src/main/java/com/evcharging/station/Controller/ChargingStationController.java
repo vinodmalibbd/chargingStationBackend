@@ -1,8 +1,10 @@
 package com.evcharging.station.Controller;
 
+import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Service.ChargingStationService;
 import com.evcharging.station.Templates.ResponseTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,12 @@ public class ChargingStationController {
     @Autowired
     private ChargingStationService chargingStationService;
 
-
-    @PostMapping("/register")
-    public ResponseEntity<ChargingStationDTO> registerChargingStation(@RequestBody ChargingStationDTO chargingStationDTO){
-        ChargingStationDTO chargingStation = chargingStationService.createChargingStation(chargingStationDTO);
+    @Autowired
+    private TokenGenerator tokenGenerator;
+    @PutMapping("/update")
+    public ResponseEntity<ChargingStationDTO> registerChargingStation(@RequestBody ChargingStationDTO chargingStationDTO , HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        ChargingStationDTO chargingStation = chargingStationService.updateChargingStation(chargingStationDTO);
         return  new ResponseEntity<>(chargingStation, HttpStatusCode.valueOf(201));
     }
     @GetMapping("/{chargingStationId}")
@@ -30,7 +34,11 @@ public class ChargingStationController {
     }
 
     @GetMapping("/all")
-    public  ResponseEntity<List<ChargingStationDTO>> getAllChargingStation(){
+    public  ResponseEntity<List<ChargingStationDTO>> getAllChargingStation( HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        boolean validToken = tokenGenerator.isValidToken(token);
+        System.out.println(validToken);
+        System.out.println(token);
         List<ChargingStationDTO> allChargingStation = chargingStationService.getAllChargingStation();
         return  new ResponseEntity<>(allChargingStation,HttpStatusCode.valueOf(200));
 

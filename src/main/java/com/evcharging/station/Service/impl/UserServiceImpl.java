@@ -1,5 +1,6 @@
 package com.evcharging.station.Service.impl;
 
+import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
 import com.evcharging.station.Templates.ResponseTemplate;
@@ -8,9 +9,12 @@ import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private TokenGenerator tokenGenerator;
     @Override
     public UserDTO getUserById(int userId) {
         Optional<User> isUser = userRepo.findById(userId);
@@ -66,5 +72,28 @@ public class UserServiceImpl implements UserService {
         }
         userRepo.deleteById(Id);
         return  new ResponseTemplate("User deleted successfully",true);
+    }
+
+    @Override
+    public String CheckUserAndSave(UserDTO userDTO,HttpServletResponse http) {
+        User byEmailId = userRepo.findByEmailId(userDTO.getEmailId());
+        if(byEmailId!=null){
+            System.out.println("user already exits");
+            String token = tokenGenerator.generateToken(byEmailId.getEmailId());
+            System.out.println(token);
+
+            Cookie c=new Cookie("web-vb-token",token);
+            c.setMaxAge(24*60*60*7);
+            http.addCookie(c);
+            return  token;
+        }
+        User mappedUser = modelMapper.map(userDTO, User.class);
+        User save = userRepo.save(mappedUser);
+        String token = tokenGenerator.generateToken(save.getEmailId());
+        Cookie c=new Cookie("web-vb-token",token);
+        c.setMaxAge(24*60*60*7);
+        http.addCookie(c);
+        System.out.println(token);
+        return token;
     }
 }

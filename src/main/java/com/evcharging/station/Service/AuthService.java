@@ -1,11 +1,13 @@
 package com.evcharging.station.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.net.http.HttpRequest;
 
 public interface AuthService {
-    boolean isLoginUser(HttpRequest httpRequest);
-    boolean isLoginStation(HttpRequest httpRequest);
-    boolean isValidUser(HttpRequest httpRequest,int userid);
-    boolean isAdmin(HttpRequest httpRequest,int userid);
+    boolean isLoginUser(HttpServletRequest httpRequest);
+    boolean isLoginStation(HttpServletRequest httpRequest);
+    boolean isValidUser(HttpServletRequest httpRequest,int userid);
+    boolean isAdmin(HttpServletRequest httpRequest,int userid);
 
 }

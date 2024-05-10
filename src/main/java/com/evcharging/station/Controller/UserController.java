@@ -6,13 +6,13 @@ import com.evcharging.station.Templates.ResponseTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.ArrayList;
 import java.util.List;
-
-
+import java.util.Map;
 
 
 @RestController
@@ -20,6 +20,8 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> createUser( @RequestBody UserDTO userDTO){
         UserDTO user = userService.createUser(userDTO);
@@ -40,4 +42,5 @@ public class UserController {
         ResponseTemplate r=userService.deleteUser(Id);
         return  new ResponseEntity<>(r,HttpStatusCode.valueOf(200));
     }
+
 }

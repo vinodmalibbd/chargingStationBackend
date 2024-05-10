@@ -18,17 +18,17 @@ public class ChargingStation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stationId;
-    @Column(nullable = false,length = 25,name = "StationName")
+    @Column(length = 25,name = "StationName")
     private String name;
-    @Column(nullable = false,name = "Longitude")
+    @Column(name = "Longitude")
     private double longitude;
-    @Column(nullable = false,name = "Latitude")
+    @Column(name = "Latitude")
     private double latitude;
     @Column(nullable = false,length = 25,name = "EmailId",unique = true)
     private String emailId;
-    @Column(nullable = false,name = "OpenTime")
+    @Column(name = "OpenTime")
     private int openTime;
-    @Column(nullable = false,name = "CloseTime")
+    @Column(name = "CloseTime")
     private int closeTime;
     @OneToMany(mappedBy = "chargingStation",cascade = CascadeType.ALL)
     private List<ChargingSlot> chargingSlots=new ArrayList<>();

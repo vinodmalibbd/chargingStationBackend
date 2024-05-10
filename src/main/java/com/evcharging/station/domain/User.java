@@ -19,8 +19,7 @@ public class User {
     private String lastName;
     @Column(nullable = false,length = 25,unique = true,name = "Email")
     private  String emailId;
-    @Column(nullable = false,length = 15,name ="MobileNumber")
-    private  String mobileNumber;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<FeedBack> feedbacks=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

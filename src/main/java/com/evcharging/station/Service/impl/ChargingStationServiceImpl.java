@@ -1,5 +1,6 @@
 package com.evcharging.station.Service.impl;
 
+import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.Templates.ResponseTemplate;
@@ -8,6 +9,9 @@ import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import com.evcharging.station.Service.ChargingStationService;
 
+import com.evcharging.station.domain.User;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +30,8 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     private ChargingStationRepo chargingStationRepo;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private TokenGenerator tokenGenerator;
     @Override
     public ChargingStationDTO getChargingStationById(int chargingStationId) {
         Optional<ChargingStation> isChargingStation = chargingStationRepo.findById(chargingStationId);
@@ -50,19 +56,19 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     }
 
     @Override
-    public ChargingStationDTO createChargingStation(ChargingStationDTO chargingStationDTO) {
+    public ChargingStationDTO updateChargingStation(ChargingStationDTO chargingStationDTO) {
 
         ChargingStation isExits = chargingStationRepo.findByEmailId(chargingStationDTO.getEmailId());
-        if(isExits!=null){
-           // System.out.println("chargingstation already exits");
-            throw new ResourceAlreadyExist("station","already exist");
-
+        if(isExits==null){
+            throw  new ResourceNotFound("charging station","not found");
         }
-
-        ChargingStation chargingStation = modelMapper.map(chargingStationDTO, ChargingStation.class);
-        ChargingStation saved = chargingStationRepo.save(chargingStation);
-        return modelMapper.map(saved,ChargingStationDTO.class);
-
+        isExits.setName(chargingStationDTO.getName());
+        isExits.setLatitude(chargingStationDTO.getLatitude());
+        isExits.setLongitude(chargingStationDTO.getLongitude());
+        isExits.setOpenTime(chargingStationDTO.getOpenTime());
+        isExits.setCloseTime(chargingStationDTO.getCloseTime());
+        ChargingStation save = chargingStationRepo.save(isExits);
+        return modelMapper.map(save,ChargingStationDTO.class);
     }
 
     @Override
@@ -74,4 +80,29 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         chargingStationRepo.delete(byid.get());
         return new ResponseTemplate("charging slot deleted",true);
     }
+
+    @Override
+    public String CheckStationAndSave(String email, HttpServletResponse http) {
+        ChargingStation byEmailId= chargingStationRepo.findByEmailId(email);
+        if(byEmailId!=null){
+            System.out.println("user already exits");
+            String token = tokenGenerator.generateToken(byEmailId.getEmailId());
+            System.out.println(token);
+
+            Cookie c=new Cookie("web-station-token",token);
+            c.setMaxAge(24*60*60*7);
+            http.addCookie(c);
+            return  token;
+        }
+        ChargingStation newchargepoint=new ChargingStation();
+        newchargepoint.setEmailId(email);
+        chargingStationRepo.save(newchargepoint);
+        String token = tokenGenerator.generateToken(newchargepoint.getEmailId());
+        Cookie c=new Cookie("web-station-token",token);
+        c.setMaxAge(24*60*60*7);
+        http.addCookie(c);
+        System.out.println(token);
+        return token;
+    }
+
 }

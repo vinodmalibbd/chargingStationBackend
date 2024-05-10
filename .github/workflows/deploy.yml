@@ -22,11 +22,9 @@ jobs:
           mvn clean install
           mkdir artifacts && cp target/*.jar artifacts
           cd artifacts && ls
-      - name: delete artifact
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: github-action-artifact
-          path: artifacts
+      - name: Delete existing artifacts
+        run: |
+            rm -rf ./artifacts/*
       - name: Save artifact
         uses: actions/upload-artifact@v2
         with:

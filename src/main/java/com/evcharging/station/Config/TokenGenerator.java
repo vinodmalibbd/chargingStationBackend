@@ -1,8 +1,10 @@
 package com.evcharging.station.Config;
 
+import com.evcharging.station.RuntimeException.AuthException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +33,11 @@ public class TokenGenerator {
                 .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
-    public boolean isValidToken(String token) {
+    public boolean isValidToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(token==""){
+            throw new AuthException("station", "not logged in");
+        }
         try {
 
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);

@@ -1,8 +1,11 @@
 package com.evcharging.station.Controller;
 
+import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.UserDTO;
+import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Service.UserService;
 import com.evcharging.station.Templates.ResponseTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -20,27 +23,38 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenGenerator tokenGenerator;
 
-
-    @PostMapping("/register")
-    public ResponseEntity<UserDTO> createUser( @RequestBody UserDTO userDTO){
-        UserDTO user = userService.createUser(userDTO);
-        return new ResponseEntity<>(user, HttpStatusCode.valueOf(201));
-    }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<UserDTO> createUser( @RequestBody UserDTO userDTO){
+//        UserDTO user = userService.createUser(userDTO);
+//        return new ResponseEntity<>(user, HttpStatusCode.valueOf(201));
+//    }
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable int userId){
+    public ResponseEntity<UserDTO> getUser(@PathVariable int userId, HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         UserDTO user = userService.getUserById(userId);
         return new ResponseEntity<>(user, HttpStatusCode.valueOf(201));
     }
     @GetMapping("/all")
-    public ResponseEntity<List<UserDTO>> getAllUser(){
+    public ResponseEntity<List<UserDTO>> getAllUser(HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         List<UserDTO> allUser = userService.getAllUser();
         return new ResponseEntity<>(allUser, HttpStatusCode.valueOf(201));
     }
-    @DeleteMapping("/{Id}")
-    public ResponseEntity<ResponseTemplate> deleteUser (@PathVariable int Id){
-        ResponseTemplate r=userService.deleteUser(Id);
-        return  new ResponseEntity<>(r,HttpStatusCode.valueOf(200));
-    }
+//    @DeleteMapping("/{Id}")
+//    public ResponseEntity<ResponseTemplate> deleteUser (@PathVariable int Id){
+//
+//        ResponseTemplate r=userService.deleteUser(Id);
+//        return  new ResponseEntity<>(r,HttpStatusCode.valueOf(200));
+//    }
 
 }

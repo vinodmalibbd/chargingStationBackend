@@ -2,6 +2,7 @@ package com.evcharging.station.Controller;
 
 import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Service.ChargingStationService;
 import com.evcharging.station.Templates.ResponseTemplate;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +24,10 @@ public class ChargingStationController {
     private TokenGenerator tokenGenerator;
     @PutMapping("/update")
     public ResponseEntity<ChargingStationDTO> registerChargingStation(@RequestBody ChargingStationDTO chargingStationDTO , HttpServletRequest request){
-        String token = request.getHeader("Authorization");
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         ChargingStationDTO chargingStation = chargingStationService.updateChargingStation(chargingStationDTO);
         return  new ResponseEntity<>(chargingStation, HttpStatusCode.valueOf(201));
     }
@@ -34,19 +38,15 @@ public class ChargingStationController {
     }
 
     @GetMapping("/all")
-    public  ResponseEntity<List<ChargingStationDTO>> getAllChargingStation( HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        boolean validToken = tokenGenerator.isValidToken(token);
-        System.out.println(validToken);
-        System.out.println(token);
+    public  ResponseEntity<List<ChargingStationDTO>> getAllChargingStation( ){
         List<ChargingStationDTO> allChargingStation = chargingStationService.getAllChargingStation();
         return  new ResponseEntity<>(allChargingStation,HttpStatusCode.valueOf(200));
 
     }
-    @DeleteMapping("/{Id}")
-    public ResponseEntity<ResponseTemplate> deleteSlot(@PathVariable int Id){
-        ResponseTemplate responseTemplate = chargingStationService.deleteChargingStation(Id);
-        return new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
-    }
+//    @DeleteMapping("/{Id}")
+//    public ResponseEntity<ResponseTemplate> deleteSlot(@PathVariable int Id){
+//        ResponseTemplate responseTemplate = chargingStationService.deleteChargingStation(Id);
+//        return new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
+//    }
 
 }

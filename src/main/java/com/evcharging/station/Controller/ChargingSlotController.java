@@ -1,9 +1,12 @@
 package com.evcharging.station.Controller;
 
+import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Service.ChargingSlotService;
 import com.evcharging.station.Templates.ResponseTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +21,26 @@ import java.util.Set;
 public class ChargingSlotController {
     @Autowired
     private ChargingSlotService chargingSlotService;
+    @Autowired
+    private TokenGenerator tokenGenerator;
 
     @PostMapping("/addslot/{chargingStationId}")
-    public ResponseEntity<ChargingStationDTO> createChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,@PathVariable int chargingStationId){
+    public ResponseEntity<ChargingStationDTO> createChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO, @PathVariable int chargingStationId, HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         ChargingStationDTO chargingStationDTO = chargingSlotService.addChargingSlot(chargingSlotDTO,chargingStationId);
         return  new ResponseEntity<>(chargingStationDTO, HttpStatusCode.valueOf(201));
 
     }
 
     @GetMapping("/{chargingSlotId}")
-    public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable int chargingSlotId){
+    public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable int chargingSlotId,HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         ChargingSlotDTO chargingSlotById = chargingSlotService.getChargingSlotById(chargingSlotId);
         return  new ResponseEntity<>(chargingSlotById,HttpStatusCode.valueOf(200));
     }
@@ -37,7 +50,11 @@ public class ChargingSlotController {
         return  new ResponseEntity<>(allChargingSlotByChargingId,HttpStatusCode.valueOf(200));
     }
     @DeleteMapping("/{Id}")
-    public ResponseEntity<ResponseTemplate> deleteSlot(@PathVariable int Id){
+    public ResponseEntity<ResponseTemplate> deleteSlot(@PathVariable int Id,HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         ResponseTemplate responseTemplate = chargingSlotService.deleteSlot(Id);
         return new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
     }

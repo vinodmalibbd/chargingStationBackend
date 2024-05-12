@@ -1,5 +1,6 @@
 package com.evcharging.station.GlobalExceptionHandler;
 
+import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
 import org.springframework.http.HttpStatus;
@@ -40,6 +41,14 @@ public class GlobalExceptionHandler {
        mp.put("Error",resource+" "+msg);
        return new ResponseEntity<>(mp,HttpStatus.ALREADY_REPORTED);
 
+    }
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<Map<String,String>> alreadyExist(AuthException ex) {
+        String resource = ex.getResource();
+        String message = ex.getMessage();
+        Map<String, String> mp = new HashMap<>();
+        mp.put("Error", resource + " " + message);
+        return new ResponseEntity<Map<String, String>>(mp, HttpStatus.FORBIDDEN);
     }
 
 

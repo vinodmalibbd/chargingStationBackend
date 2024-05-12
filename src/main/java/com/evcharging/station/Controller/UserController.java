@@ -26,17 +26,12 @@ public class UserController {
     @Autowired
     private TokenGenerator tokenGenerator;
 
-//
-//    @PostMapping("/register")
-//    public ResponseEntity<UserDTO> createUser( @RequestBody UserDTO userDTO){
-//        UserDTO user = userService.createUser(userDTO);
-//        return new ResponseEntity<>(user, HttpStatusCode.valueOf(201));
-//    }
+
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUser(@PathVariable int userId, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
-            throw new AuthException("station", "not logged in");
+            throw new AuthException("user", "not logged in");
         }
         UserDTO user = userService.getUserById(userId);
         return new ResponseEntity<>(user, HttpStatusCode.valueOf(201));
@@ -50,11 +45,5 @@ public class UserController {
         List<UserDTO> allUser = userService.getAllUser();
         return new ResponseEntity<>(allUser, HttpStatusCode.valueOf(201));
     }
-//    @DeleteMapping("/{Id}")
-//    public ResponseEntity<ResponseTemplate> deleteUser (@PathVariable int Id){
-//
-//        ResponseTemplate r=userService.deleteUser(Id);
-//        return  new ResponseEntity<>(r,HttpStatusCode.valueOf(200));
-//    }
 
 }

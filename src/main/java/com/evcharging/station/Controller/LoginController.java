@@ -27,6 +27,7 @@ public class LoginController {
     private UserService userService;
     @Autowired
     private ChargingStationService chargingstationService;
+
     @GetMapping("/user")
     public RedirectView getAllUser(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletResponse response){
         Map<String, Object> attributes = oauth2User.getAttributes();
@@ -53,7 +54,8 @@ public class LoginController {
         String email=oauth2User.getAttribute("email");
         String token = chargingstationService.CheckStationAndSave(email,response);
         String encodedToken=URLEncoder.encode(token);
-        String redirectUrl = "http://127.0.0.1:5500/index.html?email=" + encodedToken;
+        String role=URLEncoder.encode("chargingstation");
+        String redirectUrl = "http://127.0.0.1:5500/index.html?email=" + encodedToken+"&role="+role;
 
         return new RedirectView(redirectUrl);
     }

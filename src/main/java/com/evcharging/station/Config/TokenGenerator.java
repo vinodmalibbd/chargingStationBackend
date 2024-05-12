@@ -22,12 +22,13 @@ public class TokenGenerator {
 
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
-    public String generateToken(String username) {
+    public String generateToken(String username,int id) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 5 * 60 * 60 * 1000); // 5 hours
 
         return Jwts.builder()
                 .setSubject(username)
+                .setSubject(String.valueOf(id))
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(secretKey, SignatureAlgorithm.HS512)

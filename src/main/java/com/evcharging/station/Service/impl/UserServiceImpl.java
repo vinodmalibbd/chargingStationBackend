@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
         User byEmailId = userRepo.findByEmailId(userDTO.getEmailId());
         if(byEmailId!=null){
             System.out.println("user already exits");
-            String token = tokenGenerator.generateToken(byEmailId.getEmailId());
+            String token = tokenGenerator.generateToken(byEmailId.getEmailId(),byEmailId.getUserId());
             System.out.println(token);
 
             Cookie c=new Cookie("web-vb-token",token);
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
         }
         User mappedUser = modelMapper.map(userDTO, User.class);
         User save = userRepo.save(mappedUser);
-        String token = tokenGenerator.generateToken(save.getEmailId());
+        String token = tokenGenerator.generateToken(save.getEmailId(),save.getUserId());
         Cookie c=new Cookie("web-vb-token",token);
         c.setMaxAge(24*60*60*7);
         http.addCookie(c);

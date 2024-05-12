@@ -86,7 +86,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         ChargingStation byEmailId= chargingStationRepo.findByEmailId(email);
         if(byEmailId!=null){
             System.out.println("user already exits");
-            String token = tokenGenerator.generateToken(byEmailId.getEmailId());
+            String token = tokenGenerator.generateToken(byEmailId.getEmailId(),byEmailId.getStationId());
             System.out.println(token);
 
             Cookie c=new Cookie("web-station-token",token);
@@ -96,8 +96,8 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         }
         ChargingStation newchargepoint=new ChargingStation();
         newchargepoint.setEmailId(email);
-        chargingStationRepo.save(newchargepoint);
-        String token = tokenGenerator.generateToken(newchargepoint.getEmailId());
+        ChargingStation save = chargingStationRepo.save(newchargepoint);
+        String token = tokenGenerator.generateToken(save.getEmailId(),save.getStationId());
         Cookie c=new Cookie("web-station-token",token);
         c.setMaxAge(24*60*60*7);
         http.addCookie(c);

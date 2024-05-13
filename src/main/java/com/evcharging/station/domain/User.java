@@ -17,7 +17,7 @@ public class User {
     private String firstName;
     @Column(nullable = false,length = 25,name = "LastName")
     private String lastName;
-    @Column(nullable = false,length = 25,unique = true,name = "Email")
+    @Column(nullable = false,length = 50,unique = true,name = "Email")
     private  String emailId;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

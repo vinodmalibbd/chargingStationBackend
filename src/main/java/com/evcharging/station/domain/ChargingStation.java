@@ -18,13 +18,13 @@ public class ChargingStation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stationId;
-    @Column(length = 25,name = "StationName")
+    @Column(length = 50,name = "StationName")
     private String name;
     @Column(name = "Longitude")
     private double longitude;
     @Column(name = "Latitude")
     private double latitude;
-    @Column(nullable = false,length = 25,name = "EmailId",unique = true)
+    @Column(nullable = false,length = 40,name = "EmailId",unique = true)
     private String emailId;
     @Column(name = "OpenTime")
     private int openTime;

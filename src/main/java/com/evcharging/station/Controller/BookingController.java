@@ -5,6 +5,7 @@ import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.RuntimeException.AuthException;
+import com.evcharging.station.Templates.SlotAvailabilityRequest;
 import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
@@ -19,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/booking")
-
 public class BookingController {
     @Autowired
     private BookingService bookingService;
@@ -67,9 +67,9 @@ public class BookingController {
         List<TimeSlotDTO> availableTimeslot = bookingService.getBookedTimeslot(chargingslotid);
         return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));
     }
-    @GetMapping("/availability/{chargingslotid}")
-    public  ResponseEntity<List<TimeSlot>> getAvailableTimeslot(@PathVariable int chargingslotid){
-        List<TimeSlot> availableTimeslot = bookingService.getAvailableTimeslot(chargingslotid);
+    @GetMapping("/availability/chargingslot")
+    public  ResponseEntity<List<TimeSlot>> getAvailableTimeslot(@RequestBody SlotAvailabilityRequest slotAvailabilityRequest){
+        List<TimeSlot> availableTimeslot = bookingService.getAvailableTimeslot(slotAvailabilityRequest);
         return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));
     }
 }

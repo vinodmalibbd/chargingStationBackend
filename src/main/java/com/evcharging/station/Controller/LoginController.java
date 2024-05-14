@@ -43,7 +43,7 @@ public class LoginController {
         // Construct the redirect URL with user information as query parameters
         String encodedToken=URLEncoder.encode(token);
         String role=URLEncoder.encode("user");
-        String redirectUrl = "http://127.0.0.1:5500/index.html?email=" + encodedToken+"&role="+role;;
+        String redirectUrl = "http://smart-ev.projects.bbdgrad.com?token=" + encodedToken+"&role="+role;;
 
         // Redirect to the frontend with user information included
         return new RedirectView(redirectUrl);
@@ -56,7 +56,7 @@ public class LoginController {
         String token = chargingstationService.CheckStationAndSave(email,response);
         String encodedToken=URLEncoder.encode(token);
         String role=URLEncoder.encode("chargingstation");
-        String redirectUrl = "http://127.0.0.1:5500/index.html?email=" + encodedToken+"&role="+role;
+        String redirectUrl = "http://smart-ev.projects.bbdgrad.com?token=" + encodedToken+"&role="+role;
 
         return new RedirectView(redirectUrl);
     }

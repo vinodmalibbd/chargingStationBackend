@@ -13,5 +13,6 @@ public interface BookingRepo extends JpaRepository<Booking,Integer> {
     List<Booking> findAllByUser(User user);
     List<Booking> findAllByChargingSlotAndDate(ChargingSlot chargingSlot, Date date);
     List<Booking> findAllByChargingSlot(ChargingSlot chargingSlot);
+    List<Booking> findAllByChargingSlotAndDateAndStatus(ChargingSlot chargingSlot,Date date,String status);
 
 }

@@ -5,6 +5,7 @@ import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.DTO.UserDTO;
+import com.evcharging.station.Templates.SlotAvailabilityRequest;
 import com.evcharging.station.domain.*;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;
@@ -202,15 +203,14 @@ public class BookingServiceImpl implements BookingService {
         return ls;
 
     }
-
     @Override
-    public List<TimeSlot> getAvailableTimeslot(int chargingSlotId) {
-        Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(chargingSlotId);
+    public List<TimeSlot> getAvailableTimeslot(SlotAvailabilityRequest slotAvailabilityRequest) {
+        Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(slotAvailabilityRequest.getChargingSlotId());
         if(isSlot.isEmpty()){
             System.out.println("slot is not present");
             throw new ResourceNotFound("Slot","not Present");
         }
-        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlot(isSlot.get());
+        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlotAndDateAndStatus(isSlot.get(),slotAvailabilityRequest.getDate(),"confirmed");
         List<TimeSlot> alltimeslot = timeslotRepo.findAll();
         alltimeslot.removeIf(allByChargingSlot::contains);
         return alltimeslot;

@@ -2,6 +2,7 @@ package com.evcharging.station.Service;
 
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
+import com.evcharging.station.Templates.SlotAvailabilityRequest;
 import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Templates.BookingRequest;
 
@@ -21,7 +22,7 @@ public interface BookingService {
 
     String cancleBooking(int bookingId);
     List<TimeSlotDTO> getBookedTimeslot(int chargingSlotId);
-    List<TimeSlot> getAvailableTimeslot(int chargingSlotId);
+    List<TimeSlot> getAvailableTimeslot(SlotAvailabilityRequest slotAvailabilityRequest);
 
 
 }

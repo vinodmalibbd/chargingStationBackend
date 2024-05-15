@@ -43,7 +43,7 @@ public class LoginController {
         // Construct the redirect URL with user information as query parameters
         String encodedToken=URLEncoder.encode(token);
         String role=URLEncoder.encode("user");
-        String redirectUrl = "http://smart-ev.projects.bbdgrad.com?token=" + encodedToken+"&role="+role;;
+        String redirectUrl = "https://smart-ev.projects.bbdgrad.com?token=" + encodedToken+"&role="+role;;
 
         // Redirect to the frontend with user information included
         return new RedirectView(redirectUrl);

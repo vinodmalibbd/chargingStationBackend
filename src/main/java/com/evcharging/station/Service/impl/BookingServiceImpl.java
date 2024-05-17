@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -28,6 +29,8 @@ public class BookingServiceImpl implements BookingService {
     private BookingRepo bookingRepo;
     @Autowired
     private TimeslotRepo timeslotRepo;
+    @Autowired
+    private ChargingStationRepo chargingStationRepo;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -206,13 +209,41 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<TimeSlot> getAvailableTimeslot(SlotAvailabilityRequest slotAvailabilityRequest) {
         Optional<ChargingSlot> isSlot = chargingSlotRepo.findById(slotAvailabilityRequest.getChargingSlotId());
-        if(isSlot.isEmpty()){
-            System.out.println("slot is not present");
-            throw new ResourceNotFound("Slot","not Present");
+        if (isSlot.isEmpty()) {
+            System.out.println("Slot is not present");
+            throw new ResourceNotFound("Slot", "not Present");
         }
-        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlotAndDateAndStatus(isSlot.get(),slotAvailabilityRequest.getDate(),"confirmed");
-        List<TimeSlot> alltimeslot = timeslotRepo.findAll();
-        alltimeslot.removeIf(allByChargingSlot::contains);
-        return alltimeslot;
+
+        Optional<ChargingStation> isStation = chargingStationRepo.findById(slotAvailabilityRequest.getStationId());
+        if (isStation.isEmpty()) {
+            System.out.println("Charging station is not present");
+            throw new ResourceNotFound("chargingstation", "not Present");
+        }
+
+        // Get the open and close time of the charging station
+        ChargingStation chargingStation = isStation.get();
+        int openTime = chargingStation.getOpenTime(); // Assuming open time is in integer format (e.g., 18 for 6:00 PM)
+        int closeTime = chargingStation.getCloseTime(); // Assuming close time is in integer format (e.g., 22 for 10:00 PM)
+
+        // Get all time slots from the repository
+        List<TimeSlot> allTimeSlots = timeslotRepo.findAll();
+
+        // Filter time slots within the open and close time of the charging station
+        List<TimeSlot> availableTimeSlots = allTimeSlots.stream()
+                .filter(timeSlot -> timeSlot.getStartTime() >= openTime && timeSlot.getEndTime() <= closeTime)
+                .collect(Collectors.toList());
+
+        // You may further filter based on date if required
+        List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlotAndDateAndStatus(isSlot.get(), slotAvailabilityRequest.getDate(), "confirmed");
+
+        // Convert the list of timeSlotIds from the bookings to a set for faster lookup
+        Set<Integer> bookedTimeSlotIds = allByChargingSlot.stream()
+                .map(Booking::getTimeSlotId)
+                .collect(Collectors.toSet());
+
+        // Remove time slots whose IDs are booked from the available time slots
+        availableTimeSlots.removeIf(timeSlot -> bookedTimeSlotIds.contains(timeSlot.getTimeSlotId()));
+
+        return availableTimeSlots;
     }
 }

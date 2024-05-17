@@ -67,7 +67,7 @@ public class BookingController {
         List<TimeSlotDTO> availableTimeslot = bookingService.getBookedTimeslot(chargingslotid);
         return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));
     }
-    @GetMapping("/availability/chargingslot")
+    @PostMapping("/availability/chargingslot")
     public  ResponseEntity<List<TimeSlot>> getAvailableTimeslot(@RequestBody SlotAvailabilityRequest slotAvailabilityRequest){
         List<TimeSlot> availableTimeslot = bookingService.getAvailableTimeslot(slotAvailabilityRequest);
         return new ResponseEntity<>(availableTimeslot,HttpStatusCode.valueOf(200));

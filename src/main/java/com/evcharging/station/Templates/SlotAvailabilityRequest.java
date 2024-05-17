@@ -14,4 +14,5 @@ import java.util.Date;
 public class SlotAvailabilityRequest {
     private Date date;
     private int chargingSlotId;
+    private int stationId;
 }

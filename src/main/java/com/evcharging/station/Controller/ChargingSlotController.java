@@ -34,6 +34,15 @@ public class ChargingSlotController {
         return  new ResponseEntity<>(chargingStationDTO, HttpStatusCode.valueOf(201));
 
     }
+    @PutMapping("/update}")
+    public ResponseEntity<ResponseTemplate> updateChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,HttpServletRequest http){
+        boolean validToken = tokenGenerator.isValidToken(http);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
+        ResponseTemplate responseTemplate = chargingSlotService.updateChargingSlot(chargingSlotDTO);
+        return new ResponseEntity<>(responseTemplate,HttpStatusCode.valueOf(200));
+    }
 
     @GetMapping("/{chargingSlotId}")
     public ResponseEntity<ChargingSlotDTO> getSlotById(@PathVariable int chargingSlotId,HttpServletRequest request){

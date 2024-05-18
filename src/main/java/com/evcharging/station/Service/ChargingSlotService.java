@@ -15,5 +15,5 @@ public interface ChargingSlotService {
     ChargingSlotDTO getChargingSlotById(int chargingSlotId);
     List<ChargingSlotDTO> getAllChargingSlotByChargingId(int chargingStationId);
     ResponseTemplate deleteSlot(int id);
-
+    ResponseTemplate updateChargingSlot(ChargingSlotDTO chargingSlotDTO);
 }

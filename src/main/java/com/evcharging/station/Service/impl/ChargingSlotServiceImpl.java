@@ -109,5 +109,18 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
         return  new ResponseTemplate("slot deleted successfully",true);
     }
 
+    @Override
+    public ResponseTemplate updateChargingSlot(ChargingSlotDTO chargingSlotDTO) {
+        Optional<ChargingSlot> byId = chargingSlotRepo.findById(chargingSlotDTO.getSlotId());
+        if(byId.isEmpty()){
+            throw  new ResourceNotFound("slot ","not found");
+        }
+        ChargingSlot chargingSlot = byId.get();
+        chargingSlot.setAvailable(chargingSlotDTO.isAvailable());
+        chargingSlot.setPricePerHour(chargingSlotDTO.getPricePerHour());
+        chargingSlotRepo.save(chargingSlot);
+        return new ResponseTemplate("chargingslot updated",true);
+    }
+
 
 }

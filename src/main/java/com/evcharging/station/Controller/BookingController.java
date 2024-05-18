@@ -29,7 +29,7 @@ public class BookingController {
     public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingRequest bookingRequest, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
-            throw new AuthException("station", "not logged in");
+            throw new AuthException("user", "not logged in");
         }
         BookingDTO booking = bookingService.createBooking(bookingRequest);
         return new ResponseEntity<>(booking, HttpStatusCode.valueOf(201));
@@ -48,15 +48,23 @@ public class BookingController {
     public  ResponseEntity<List<BookingDTO>>getStationBookingTodays(){
         return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
     }
-    @GetMapping("/user/{userid}")
-    public ResponseEntity<List<BookingDTO>> getUserBookingTodays(@PathVariable int userid){
+    @GetMapping("/user/{userid}/todays")
+    public ResponseEntity<List<BookingDTO>> getUserBookingTodays(@PathVariable int userid,HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("user", "not logged in");
+        }
         List<BookingDTO> allUserBooking = bookingService.getAllUserBooking(userid);
         return new ResponseEntity<>(allUserBooking,HttpStatusCode.valueOf(200));
     }
     @GetMapping("/cancle/{bookingId}")
-    public ResponseEntity<String> cancleBooking(@PathVariable int bookingId){
+    public ResponseEntity<String> cancleBooking(@PathVariable int bookingId,HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("user", "not logged in");
+        }
         String s = bookingService.cancleBooking(bookingId);
-        return new ResponseEntity<>(s, HttpStatusCode.valueOf(201));
+        return new ResponseEntity<>(s, HttpStatusCode.valueOf(200));
     }
     @GetMapping("/booked/{chargingslotid}")
     public  ResponseEntity<List<TimeSlotDTO>> getBookedTimeslot(@PathVariable int chargingslotid,HttpServletRequest request){

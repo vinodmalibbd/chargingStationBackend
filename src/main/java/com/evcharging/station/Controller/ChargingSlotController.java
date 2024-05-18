@@ -34,7 +34,7 @@ public class ChargingSlotController {
         return  new ResponseEntity<>(chargingStationDTO, HttpStatusCode.valueOf(201));
 
     }
-    @PutMapping("/update}")
+    @PutMapping("/update")
     public ResponseEntity<ResponseTemplate> updateChargingSlot(@RequestBody ChargingSlotDTO chargingSlotDTO,HttpServletRequest http){
         boolean validToken = tokenGenerator.isValidToken(http);
         if(!validToken) {

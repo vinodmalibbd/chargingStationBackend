@@ -4,6 +4,7 @@ import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DAO.UserRepo;
 import com.evcharging.station.DTO.UserDTO;
 import com.evcharging.station.Templates.ResponseTemplate;
+import com.evcharging.station.domain.Booking;
 import com.evcharging.station.domain.User;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.RuntimeException.ResourceNotFound;

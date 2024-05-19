@@ -45,8 +45,12 @@ public class BookingController {
 
         return new ResponseEntity<>(allChargingSlotBooking,HttpStatusCode.valueOf(200));
     }
-    @GetMapping("/chargingstation/{stationId}")
-    public  ResponseEntity<List<Booking>>getStationBookingTodays(@PathVariable int stationId){
+    @GetMapping("all/chargingstation/{stationId}")
+    public  ResponseEntity<List<Booking>>getStationBookingTodays(@PathVariable int stationId ,HttpServletRequest request){
+        boolean validToken = tokenGenerator.isValidToken(request);
+        if(!validToken) {
+            throw new AuthException("station", "not logged in");
+        }
         List<Booking> allChargingStationBooking = bookingService.getAllChargingStationBooking(stationId);
         return new ResponseEntity<>(allChargingStationBooking,HttpStatusCode.valueOf(200));
     }

@@ -5,6 +5,7 @@ import com.evcharging.station.DTO.UserDTO;
 import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Service.UserService;
 import com.evcharging.station.Templates.ResponseTemplate;
+import com.evcharging.station.domain.Booking;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;

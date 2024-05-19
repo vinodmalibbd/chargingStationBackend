@@ -18,11 +18,11 @@ public class Booking {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false,name = "Date")
     private Date date;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "userId")
     private User user;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "chargingSlotId")
     private ChargingSlot chargingSlot;

@@ -40,9 +40,6 @@ public class BookingServiceImpl implements BookingService {
         Optional<TimeSlot> isTime = timeslotRepo.findById(bookingRequest.getTimeSlotId());
         Optional<ChargingSlot>isSlot = chargingSlotRepo.findById(bookingRequest.getChargingSlotId());
         Optional<User> isUser = userRepo.findById(bookingRequest.getUserId());
-//        System.out.println(isTime.get().getTimeSlotId());
-//        System.out.println(isSlot.get().getSlotId());
-//        System.out.println(isUser.get().getUserId());
 
         if(isTime.isEmpty()||isUser.isEmpty()||isSlot.isEmpty()){
             throw new ResourceNotFound(" ","All Fields are required ,fill all fields");
@@ -121,17 +118,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDTO> getAllUserBooking(int userId) {
+    public List<Booking> getAllUserBooking(int userId) {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUser = bookingRepo.findAllByUser(isUser.get());
-        List<BookingDTO> ls=new ArrayList<>();
-        for (Booking b: allByUser){
-            ls.add(modelMapper.map(b,BookingDTO.class));
-        }
-        return ls;
+        return allByUser;
     }
 
     @Override

@@ -15,7 +15,7 @@ public class Booking {
     private int bookingId;
     @Column(nullable = false,length = 25,name = "Status")
     private String status;
-    @Temporal(TemporalType.DATE)
+
     @Column(nullable = false,name = "Date")
     private Date date;
     @ManyToOne

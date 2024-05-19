@@ -43,14 +43,14 @@ public class ChargingStationServiceImpl implements ChargingStationService {
     }
 
     @Override
-    public List<ChargingStationDTO> getAllChargingStation() {
+    public List<ChargingStation> getAllChargingStation() {
         List<ChargingStation> allChargingStation = chargingStationRepo.findAll();
-        List<ChargingStationDTO> allChargingStationDTOs=new ArrayList<>();
-        for (ChargingStation c:allChargingStation){
-            allChargingStationDTOs.add(modelMapper.map(c,ChargingStationDTO.class));
-
-        }
-        return  allChargingStationDTOs;
+//        List<ChargingStationDTO> allChargingStationDTOs=new ArrayList<>();
+//        for (ChargingStation c:allChargingStation){
+//            allChargingStationDTOs.add(modelMapper.map(c,ChargingStationDTO.class));
+//
+//        }
+        return  allChargingStation;
 
 
     }

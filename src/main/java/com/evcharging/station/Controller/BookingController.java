@@ -6,6 +6,7 @@ import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Templates.SlotAvailabilityRequest;
+import com.evcharging.station.domain.Booking;
 import com.evcharging.station.domain.TimeSlot;
 import com.evcharging.station.Service.BookingService;
 import com.evcharging.station.Templates.BookingRequest;
@@ -49,12 +50,12 @@ public class BookingController {
         return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
     }
     @GetMapping("/user/{userid}/todays")
-    public ResponseEntity<List<BookingDTO>> getUserBookingTodays(@PathVariable int userid,HttpServletRequest request){
+    public ResponseEntity<List<Booking>> getUserBookingTodays(@PathVariable int userid, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
             throw new AuthException("user", "not logged in");
         }
-        List<BookingDTO> allUserBooking = bookingService.getAllUserBooking(userid);
+        List<Booking> allUserBooking = bookingService.getAllUserBooking(userid);
         return new ResponseEntity<>(allUserBooking,HttpStatusCode.valueOf(200));
     }
     @GetMapping("/cancle/{bookingId}")

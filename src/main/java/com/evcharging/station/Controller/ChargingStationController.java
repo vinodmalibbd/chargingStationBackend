@@ -5,6 +5,7 @@ import com.evcharging.station.DTO.ChargingStationDTO;
 import com.evcharging.station.RuntimeException.AuthException;
 import com.evcharging.station.Service.ChargingStationService;
 import com.evcharging.station.Templates.ResponseTemplate;
+import com.evcharging.station.domain.ChargingStation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -38,8 +39,8 @@ public class ChargingStationController {
     }
 
     @GetMapping("/all")
-    public  ResponseEntity<List<ChargingStationDTO>> getAllChargingStation( ){
-        List<ChargingStationDTO> allChargingStation = chargingStationService.getAllChargingStation();
+    public  ResponseEntity<List<ChargingStation>> getAllChargingStation( ){
+        List<ChargingStation> allChargingStation = chargingStationService.getAllChargingStation();
         return  new ResponseEntity<>(allChargingStation,HttpStatusCode.valueOf(200));
 
     }

@@ -76,8 +76,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<BookingDTO> getAllChargingStationBooking(int ChargingStationId) {
-        return null;
+    public List<Booking> getAllChargingStationBooking(int ChargingStationId) {
+        Optional<ChargingStation> byId = chargingStationRepo.findById(ChargingStationId);
+        if(byId.isEmpty()){
+            throw new ResourceNotFound("station", "is not found");
+        }
+        List<ChargingSlot> chargingSlots = byId.get().getChargingSlots();
+        List<Booking> allBookings=new ArrayList<>();
+        for (ChargingSlot c: chargingSlots){
+            List<Booking> allByChargingSlotbookings = bookingRepo.findAllByChargingSlot(c);
+            allBookings.addAll(allByChargingSlotbookings);
+        }
+        return allBookings;
     }
 
     @Override
@@ -213,28 +223,21 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceNotFound("chargingstation", "not Present");
         }
 
-        // Get the open and close time of the charging station
         ChargingStation chargingStation = isStation.get();
         int openTime = chargingStation.getOpenTime(); // Assuming open time is in integer format (e.g., 18 for 6:00 PM)
         int closeTime = chargingStation.getCloseTime(); // Assuming close time is in integer format (e.g., 22 for 10:00 PM)
 
-        // Get all time slots from the repository
         List<TimeSlot> allTimeSlots = timeslotRepo.findAll();
 
-        // Filter time slots within the open and close time of the charging station
         List<TimeSlot> availableTimeSlots = allTimeSlots.stream()
                 .filter(timeSlot -> timeSlot.getStartTime() >= openTime && timeSlot.getEndTime() <= closeTime)
                 .collect(Collectors.toList());
 
-        // You may further filter based on date if required
         List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlotAndDateAndStatus(isSlot.get(), slotAvailabilityRequest.getDate(), "confirmed");
-
-        // Convert the list of timeSlotIds from the bookings to a set for faster lookup
         Set<Integer> bookedTimeSlotIds = allByChargingSlot.stream()
                 .map(Booking::getTimeSlotId)
                 .collect(Collectors.toSet());
 
-        // Remove time slots whose IDs are booked from the available time slots
         availableTimeSlots.removeIf(timeSlot -> bookedTimeSlotIds.contains(timeSlot.getTimeSlotId()));
 
         return availableTimeSlots;

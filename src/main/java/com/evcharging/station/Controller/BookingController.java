@@ -46,8 +46,9 @@ public class BookingController {
         return new ResponseEntity<>(allChargingSlotBooking,HttpStatusCode.valueOf(200));
     }
     @GetMapping("/chargingstation/{stationId}")
-    public  ResponseEntity<List<BookingDTO>>getStationBookingTodays(){
-        return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
+    public  ResponseEntity<List<Booking>>getStationBookingTodays(@PathVariable int stationId){
+        List<Booking> allChargingStationBooking = bookingService.getAllChargingStationBooking(stationId);
+        return new ResponseEntity<>(allChargingStationBooking,HttpStatusCode.valueOf(200));
     }
 
     @GetMapping("/user/{userid}")

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface BookingService {
     BookingDTO createBooking(BookingRequest bookingDetails);
-    List<BookingDTO> getAllChargingStationBooking(int ChargingStationId);
+    List<Booking> getAllChargingStationBooking(int ChargingStationId);
     List<BookingDTO> getAllChargingSlotBooking(int ChargingSlotId);
     List<BookingDTO> getAllChargingSlotBookingByDate(int ChargingSlotId, Date date);
     List<BookingDTO> getAllChargingStationBookingByDate(int ChargingStationId, Date date);

@@ -49,7 +49,8 @@ public class BookingController {
     public  ResponseEntity<List<BookingDTO>>getStationBookingTodays(){
         return new ResponseEntity<>(new ArrayList<>(),HttpStatusCode.valueOf(200));
     }
-    @GetMapping("/user/{userid}/todays")
+
+    @GetMapping("/user/{userid}")
     public ResponseEntity<List<Booking>> getUserBookingTodays(@PathVariable int userid, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {

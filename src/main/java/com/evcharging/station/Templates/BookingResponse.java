@@ -26,7 +26,7 @@ public class BookingResponse {
     private Date date;
     private User user;
     private ChargingSlot chargingSlot;
-    private int timeSlotId;
+    private TimeSlot timeSlot;
     private String status;
     private ChargingStation chargingStation;
 }

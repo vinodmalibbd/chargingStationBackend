@@ -96,7 +96,12 @@ public class BookingServiceImpl implements BookingService {
                 bt.setUser(user);
                 bt.setBookingId(a.getBookingId());
                 bt.setDate(a.getDate());
-                bt.setTimeSlotId(a.getTimeSlotId());
+                Optional<TimeSlot> byId1 = timeslotRepo.findById(a.getTimeSlotId());
+                if(byId1.isEmpty()){
+                    bt.setTimeSlot(null);
+                }else {
+                    bt.setTimeSlot(byId1.get());
+                }
                 ChargingSlot chargingSlot = a.getChargingSlot();
                 bt.setChargingSlot(chargingSlot);
                 bt.setChargingStation(null);
@@ -161,7 +166,12 @@ public class BookingServiceImpl implements BookingService {
             bt.setUser(user);
             bt.setBookingId(b.getBookingId());
             bt.setDate(b.getDate());
-            bt.setTimeSlotId(b.getTimeSlotId());
+            Optional<TimeSlot> byId1 = timeslotRepo.findById(a.getTimeSlotId());
+            if(byId1.isEmpty()){
+                bt.setTimeSlot(null);
+            }else {
+                bt.setTimeSlot(byId1.get());
+            }
             ChargingSlot chargingSlot = b.getChargingSlot();
             bt.setChargingSlot(chargingSlot);
             ChargingStation chargingStation = chargingSlot.getChargingStation();

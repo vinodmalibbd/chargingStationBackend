@@ -5,6 +5,7 @@ import com.evcharging.station.Config.TokenGenerator;
 import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.RuntimeException.AuthException;
+import com.evcharging.station.Templates.BookingResponse;
 import com.evcharging.station.Templates.SlotAvailabilityRequest;
 import com.evcharging.station.domain.Booking;
 import com.evcharging.station.domain.TimeSlot;
@@ -46,22 +47,22 @@ public class BookingController {
         return new ResponseEntity<>(allChargingSlotBooking,HttpStatusCode.valueOf(200));
     }
     @GetMapping("all/chargingstation/{stationId}")
-    public  ResponseEntity<List<Booking>>getStationBookingTodays(@PathVariable int stationId ,HttpServletRequest request){
+    public  ResponseEntity<List<BookingResponse>>getStationBookingTodays(@PathVariable int stationId ,HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
             throw new AuthException("station", "not logged in");
         }
-        List<Booking> allChargingStationBooking = bookingService.getAllChargingStationBooking(stationId);
+        List<BookingResponse> allChargingStationBooking = bookingService.getAllChargingStationBooking(stationId);
         return new ResponseEntity<>(allChargingStationBooking,HttpStatusCode.valueOf(200));
     }
 
     @GetMapping("/user/{userid}")
-    public ResponseEntity<List<Booking>> getUserBookingTodays(@PathVariable int userid, HttpServletRequest request){
+    public ResponseEntity<List<BookingResponse>> getUserBookingTodays(@PathVariable int userid, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
             throw new AuthException("user", "not logged in");
         }
-        List<Booking> allUserBooking = bookingService.getAllUserBooking(userid);
+        List<BookingResponse> allUserBooking = bookingService.getAllUserBooking(userid);
         return new ResponseEntity<>(allUserBooking,HttpStatusCode.valueOf(200));
     }
     @GetMapping("/cancle/{bookingId}")

@@ -166,7 +166,7 @@ public class BookingServiceImpl implements BookingService {
             bt.setUser(user);
             bt.setBookingId(b.getBookingId());
             bt.setDate(b.getDate());
-            Optional<TimeSlot> byId1 = timeslotRepo.findById(a.getTimeSlotId());
+            Optional<TimeSlot> byId1 = timeslotRepo.findById(b.getTimeSlotId());
             if(byId1.isEmpty()){
                 bt.setTimeSlot(null);
             }else {

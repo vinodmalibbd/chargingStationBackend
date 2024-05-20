@@ -4,6 +4,7 @@ import com.evcharging.station.DAO.ChargingSlotRepo;
 import com.evcharging.station.DAO.ChargingStationRepo;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.ChargingStationDTO;
+import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
 import com.evcharging.station.Templates.ResponseTemplate;
 import com.evcharging.station.domain.ChargingSlot;
 import com.evcharging.station.domain.ChargingStation;
@@ -36,22 +37,26 @@ public class ChargingSlotServiceImpl implements ChargingSlotService {
             throw new ResourceNotFound("station","is not exist, create station first");
         }
         ChargingStation chargingStation = isChargingStation.get();
-        List<ChargingSlot> slots=chargingStation.getChargingSlots();
-        ChargingSlot slot = modelMapper.map(chargingSlotDTO, ChargingSlot.class);
-        slot.setChargingStation(chargingStation);
-        slots.add(slot);
-        chargingStation.setChargingSlots(slots);
-        ChargingStation savedChargingStation = chargingStationRepo.save(chargingStation);
-        List<ChargingSlot> chargingSlots = savedChargingStation.getChargingSlots();
-        List<ChargingSlotDTO> dtos=new ArrayList<>();
-        for(ChargingSlot s:chargingSlots){
-            dtos.add(modelMapper.map(s,ChargingSlotDTO.class));
+        if(chargingStation.getChargingSlots().size()<=4){
+            List<ChargingSlot> slots=chargingStation.getChargingSlots();
+            ChargingSlot slot = modelMapper.map(chargingSlotDTO, ChargingSlot.class);
+            slot.setChargingStation(chargingStation);
+            slots.add(slot);
+            chargingStation.setChargingSlots(slots);
+            ChargingStation savedChargingStation = chargingStationRepo.save(chargingStation);
+            List<ChargingSlot> chargingSlots = savedChargingStation.getChargingSlots();
+            List<ChargingSlotDTO> dtos=new ArrayList<>();
+            for(ChargingSlot s:chargingSlots){
+                dtos.add(modelMapper.map(s,ChargingSlotDTO.class));
+            }
+
+
+            ChargingStationDTO mappedDTOs = modelMapper.map(savedChargingStation, ChargingStationDTO.class);
+            mappedDTOs.setChargingSlotDTOS(dtos);
+            return  mappedDTOs;
+        }else{
+            throw new ResourceAlreadyExist("chargingslots","you can't add more than 4 slots");
         }
-
-
-        ChargingStationDTO mappedDTOs = modelMapper.map(savedChargingStation, ChargingStationDTO.class);
-        mappedDTOs.setChargingSlotDTOS(dtos);
-        return  mappedDTOs;
     }
 
 

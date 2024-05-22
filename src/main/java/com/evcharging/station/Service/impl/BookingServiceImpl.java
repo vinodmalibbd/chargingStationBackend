@@ -167,18 +167,18 @@ public class BookingServiceImpl implements BookingService {
         }
 
         if(booking.getDate().compareTo(todayDate)>0){
-            booking.setStatus("cancled");
+            booking.setStatus("cancelled");
              bookingRepo.save(booking);
-            System.out.println("cancled future booking");
+            System.out.println("cancelled future booking");
             return booking.getStatus();
 
         } else if (booking.getDate().compareTo(todayDate)==0) {
 //            TimeSlot timeSlot = isTime.get();
 
             if(todayDate.getHours()<isTime.get().getStartTime()){
-                booking.setStatus("cancled");
+                booking.setStatus("cancelled");
                 bookingRepo.save(booking);
-                System.out.println("cancle todays booking");
+                System.out.println("cancelled todays booking");
                 return  booking.toString();
             }
 

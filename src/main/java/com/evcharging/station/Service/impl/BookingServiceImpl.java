@@ -5,6 +5,7 @@ import com.evcharging.station.DTO.BookingDTO;
 import com.evcharging.station.DTO.ChargingSlotDTO;
 import com.evcharging.station.DTO.TimeSlotDTO;
 import com.evcharging.station.DTO.UserDTO;
+import com.evcharging.station.Templates.BookingResponse;
 import com.evcharging.station.Templates.SlotAvailabilityRequest;
 import com.evcharging.station.domain.*;
 import com.evcharging.station.RuntimeException.ResourceAlreadyExist;
@@ -53,7 +54,6 @@ public class BookingServiceImpl implements BookingService {
         int timeSlotId = isTime.get().getTimeSlotId();
 
         if(openTime<timeSlotId && timeSlotId<=closeTime) {
-
             Booking b = new Booking();
             b.setUser(isUser.get());
             b.setChargingSlot(isSlot.get());
@@ -76,18 +76,41 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllChargingStationBooking(int ChargingStationId) {
+    public List<BookingResponse> getAllChargingStationBooking(int ChargingStationId) {
         Optional<ChargingStation> byId = chargingStationRepo.findById(ChargingStationId);
         if(byId.isEmpty()){
             throw new ResourceNotFound("station", "is not found");
         }
         List<ChargingSlot> chargingSlots = byId.get().getChargingSlots();
         List<Booking> allBookings=new ArrayList<>();
-        for (ChargingSlot c: chargingSlots){
-            List<Booking> allByChargingSlotbookings = bookingRepo.findAllByChargingSlot(c);
-            allBookings.addAll(allByChargingSlotbookings);
+
+        List<BookingResponse> bookingResponses=new ArrayList<>();
+        for (ChargingSlot b: chargingSlots){
+
+            List<Booking> allByChargingSlot = bookingRepo.findAllByChargingSlot(b);
+            for(Booking a: allByChargingSlot){
+                BookingResponse bt=new BookingResponse();
+                User user = a.getUser();
+                user.setUserBookings(null);
+                user.setFeedbacks(null);
+                bt.setUser(user);
+                bt.setBookingId(a.getBookingId());
+                bt.setDate(a.getDate());
+                Optional<TimeSlot> byId1 = timeslotRepo.findById(a.getTimeSlotId());
+                if(byId1.isEmpty()){
+                    bt.setTimeSlot(null);
+                }else {
+                    bt.setTimeSlot(byId1.get());
+                }
+                ChargingSlot chargingSlot = a.getChargingSlot();
+                bt.setChargingSlot(chargingSlot);
+                bt.setChargingStation(null);
+                bt.setStatus(a.getStatus());
+                bookingResponses.add(bt);
+                bookingResponses.add(bt);
+            }
         }
-        return allBookings;
+        return bookingResponses;
     }
 
     @Override
@@ -128,13 +151,37 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getAllUserBooking(int userId) {
+    public List<BookingResponse> getAllUserBooking(int userId) {
         Optional<User> isUser = userRepo.findById(userId);
         if(isUser.isEmpty()){
             throw new ResourceNotFound("user","not found, try again");
         }
         List<Booking> allByUser = bookingRepo.findAllByUser(isUser.get());
-        return allByUser;
+        List<BookingResponse> bookingResponses=new ArrayList<>();
+        for (Booking b: allByUser){
+            BookingResponse bt=new BookingResponse();
+            User user = b.getUser();
+            user.setUserBookings(null);
+            user.setFeedbacks(null);
+            bt.setUser(user);
+            bt.setBookingId(b.getBookingId());
+            bt.setDate(b.getDate());
+            Optional<TimeSlot> byId1 = timeslotRepo.findById(b.getTimeSlotId());
+            if(byId1.isEmpty()){
+                bt.setTimeSlot(null);
+            }else {
+                bt.setTimeSlot(byId1.get());
+            }
+            ChargingSlot chargingSlot = b.getChargingSlot();
+            bt.setChargingSlot(chargingSlot);
+            ChargingStation chargingStation = chargingSlot.getChargingStation();
+            chargingStation.setChargingSlots(null);
+            chargingStation.setFeedbacks(null);
+            bt.setChargingStation(chargingStation);
+            bt.setStatus(b.getStatus());
+            bookingResponses.add(bt);
+        }
+        return bookingResponses;
     }
 
     @Override

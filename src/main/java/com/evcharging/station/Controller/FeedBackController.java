@@ -24,7 +24,7 @@ public class FeedBackController {
     public ResponseEntity<FeedBackDTO> addFeedbackOnStation(@RequestBody FeedBackDTO feedBackDTO, @PathVariable int stationId, @PathVariable int userId, HttpServletRequest request){
         boolean validToken = tokenGenerator.isValidToken(request);
         if(!validToken) {
-            throw new AuthException("station", "not logged in");
+            throw new AuthException("user", "not logged in");
         }
         FeedBackDTO feedback = feedbackService.addFeedbackOnStation(stationId, feedBackDTO, userId);
 

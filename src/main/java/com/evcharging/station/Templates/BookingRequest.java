@@ -16,4 +16,5 @@ public class BookingRequest {
     private int chargingSlotId;
     private int timeSlotId;
     private Date date;
+
 }

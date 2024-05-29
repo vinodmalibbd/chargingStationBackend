@@ -7,6 +7,4 @@ import java.util.List;
 public interface TimeslotService {
     List<TimeSlotDTO> createAllTimeSlot();
     List<TimeSlotDTO> getAllTimeSlot();
-    List<TimeSlotDTO> availableTimingsChargingSlot(int slotId);
-
 }

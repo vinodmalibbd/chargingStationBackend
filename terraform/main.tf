@@ -2,22 +2,20 @@ provider "aws" {
   region = "eu-west-1"
   profile = "ec2_instance_user"
 }
-resource "aws_vpc" "evchagingstation" {
-  cidr_block = "10.0.0.0/16"
+
+data "aws_vpc" "default" {
+  default = true
 }
 
-# Create internet gateway
-resource "aws_internet_gateway" "evchagingstation" {
-  vpc_id = aws_vpc.evchagingstation.id
+
+data "aws_subnet_ids" "default" {
+  vpc_id = data.aws_vpc.default.id
 }
 
-# Create a public subnet
-resource "aws_subnet" "public_subnet" {
-  vpc_id            = aws_vpc.evchagingstation.id
-  cidr_block        = "10.0.1.0/24"
-  availability_zone = "eu-west-1a" # Change the availability zone accordingly
-  map_public_ip_on_launch = true
+data "aws_subnet" "default" {
+  id = data.aws_subnet_ids.default.ids[0]
 }
+
 
 # Create security group
 resource "aws_security_group" "instance_sg" {
@@ -47,6 +45,7 @@ resource "aws_security_group" "instance_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -60,19 +59,18 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["099720109477"]
 }
 
 
-# Launch EC2 instance
 resource "aws_instance" "evstation_backend" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public_subnet.id
   key_name      = "backend"   # Change to your key p
 
-#  security_groups = [aws_security_group.instance_sg.name]
-  vpc_security_group_ids = [aws_security_group.instance_sg.id]  # Use security group ID instead of name
+
+  vpc_security_group_ids = [aws_security_group.instance_sg.id]
 
   user_data = <<-EOF
               #!/bin/bash
@@ -81,7 +79,7 @@ resource "aws_instance" "evstation_backend" {
               EOF
 }
 
-# Output public IP of EC2 instance
+
 output "public_ip" {
   value = aws_instance.evstation_backend.public_ip
 }

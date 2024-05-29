@@ -18,22 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebSecurity
 public class Oauth2config {
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws  Exception{
-//        http
-//                .authorizeRequests(a ->
-//                        a.requestMatchers("/user","/chargingstation","/booking").authenticated().anyRequest().authenticated()
-//
-//                )
-//                .oauth2Login()
-//                .userInfoEndpoint().userService(new OAuth2UserService<OAuth2UserRequest, OAuth2User>() {
-//                    @Override
-//                    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-//                        return null;
-//                    }
-//                });
-//        return http.build();
-//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

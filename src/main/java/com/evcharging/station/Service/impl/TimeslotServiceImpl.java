@@ -47,8 +47,5 @@ public class TimeslotServiceImpl implements TimeslotService {
         return  ls;
     }
 
-    @Override
-    public List<TimeSlotDTO> availableTimingsChargingSlot(int slotId) {
-        return null;
-    }
+
 }

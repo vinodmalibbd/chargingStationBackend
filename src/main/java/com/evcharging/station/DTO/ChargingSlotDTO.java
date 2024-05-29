@@ -17,8 +17,6 @@ public class ChargingSlotDTO {
     private int slotId;
     private double pricePerHour;
     private boolean available;
-    private int openTime;
-    private int closeTime;
     private ChargingStationDTO chargingStationDTO;
 
 }

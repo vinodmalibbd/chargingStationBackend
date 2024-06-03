@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             System.out.println(token);
 
             Cookie c=new Cookie("web-vb-token",token);
-            c.setMaxAge(24*60*60*7);
+            c.setMaxAge(5 * 60 * 60);
             http.addCookie(c);
             return  token;
         }
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
         User save = userRepo.save(mappedUser);
         String token = tokenGenerator.generateToken(save.getEmailId(),save.getUserId());
         Cookie c=new Cookie("web-vb-token",token);
-        c.setMaxAge(24*60*60*7);
+        c.setMaxAge(5 * 60 * 60);
         http.addCookie(c);
         System.out.println(token);
         return token;

@@ -90,7 +90,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
             System.out.println(token);
 
             Cookie c=new Cookie("web-station-token",token);
-            c.setMaxAge(24*60*60*7);
+            c.setMaxAge(5 * 60 * 60);
             http.addCookie(c);
             return  token;
         }
@@ -99,7 +99,7 @@ public class ChargingStationServiceImpl implements ChargingStationService {
         ChargingStation save = chargingStationRepo.save(newchargepoint);
         String token = tokenGenerator.generateToken(save.getEmailId(),save.getStationId());
         Cookie c=new Cookie("web-station-token",token);
-        c.setMaxAge(24*60*60*7);
+        c.setMaxAge(5 * 60 * 60);
         http.addCookie(c);
         System.out.println(token);
         return token;

@@ -16,10 +16,6 @@ import java.util.Date;
 @Service
 public class TokenGenerator {
 
-
-
-
-
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     public String generateToken(String username,int id) {

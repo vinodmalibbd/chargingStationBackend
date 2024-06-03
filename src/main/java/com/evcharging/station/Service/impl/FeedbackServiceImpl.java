@@ -36,7 +36,6 @@ public class FeedbackServiceImpl implements FeedbackService {
         Optional<ChargingStation> isStation = chargingStationRepo.findById(chargingStationId);
         if(isStation.isEmpty() || isUser.isEmpty()){
             System.out.println("something went wrong");
-
             return null;
         }
         feedback.setUser(isUser.get());

@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
         Map<String, String> mp = new HashMap<>();
         mp.put("Error", resource + " " + message);
-        return new ResponseEntity<Map<String, String>>(mp, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<Map<String, String>>(mp, HttpStatus.CONFLICT);//harshal
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>>HandleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
        String msg=ex.getMessage();
        Map<String,String> mp=new HashMap<String,String>();
        mp.put("Error",resource+" "+msg);
-       return new ResponseEntity<>(mp,HttpStatus.ALREADY_REPORTED);
+       return new ResponseEntity<>(mp,HttpStatus.NOT_FOUND);//harshal
 
     }
     @ExceptionHandler(AuthException.class)
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
         String message = ex.getMessage();
         Map<String, String> mp = new HashMap<>();
         mp.put("Error", resource + " " + message);
-        return new ResponseEntity<Map<String, String>>(mp, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<Map<String, String>>(mp, HttpStatus.CONFLICT);//harshal
     }
 
 

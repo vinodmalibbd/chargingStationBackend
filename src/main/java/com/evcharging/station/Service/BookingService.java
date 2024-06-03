@@ -16,8 +16,6 @@ public interface BookingService {
     List<BookingResponse> getAllChargingStationBooking(int ChargingStationId);
     List<BookingDTO> getAllChargingSlotBooking(int ChargingSlotId);
     List<BookingDTO> getAllChargingSlotBookingByDate(int ChargingSlotId, Date date);
-    List<BookingDTO> getAllChargingStationBookingByDate(int ChargingStationId, Date date);
-
 
     List<BookingResponse> getAllUserBooking(int userId);
     List<BookingDTO> getAllUserBookingByDate(int userId,Date date);

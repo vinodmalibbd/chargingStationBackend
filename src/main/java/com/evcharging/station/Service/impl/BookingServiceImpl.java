@@ -145,10 +145,7 @@ public class BookingServiceImpl implements BookingService {
         return ls;
     }
 
-    @Override
-    public List<BookingDTO> getAllChargingStationBookingByDate(int ChargingStationId, Date date) {
-        return null;
-    }
+
 
     @Override
     public List<BookingResponse> getAllUserBooking(int userId) {

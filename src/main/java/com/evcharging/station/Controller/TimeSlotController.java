@@ -18,11 +18,11 @@ public class TimeSlotController {
     @Autowired
     private TimeslotService timeslotService;
 
-    @GetMapping ("/createall")
-    public ResponseEntity<List<TimeSlotDTO>> createAndGetAllSlot(){
-        List<TimeSlotDTO> allTimeSlot = timeslotService.createAllTimeSlot();
-        return  new ResponseEntity<>(allTimeSlot, HttpStatusCode.valueOf(200));
-    }
+//    @GetMapping ("/createall")
+//    public ResponseEntity<List<TimeSlotDTO>> createAndGetAllSlot(){
+//        List<TimeSlotDTO> allTimeSlot = timeslotService.createAllTimeSlot();
+//        return  new ResponseEntity<>(allTimeSlot, HttpStatusCode.valueOf(200));
+//    }
 
 
 

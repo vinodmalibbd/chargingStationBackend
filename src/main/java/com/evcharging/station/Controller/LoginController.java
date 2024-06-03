@@ -29,7 +29,7 @@ public class LoginController {
     private ChargingStationService chargingstationService;
 
     @GetMapping("/user")
-    public RedirectView getAllUser(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletResponse response){
+    public RedirectView getLoggedInUser(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletResponse response){
         Map<String, Object> attributes = oauth2User.getAttributes();
         String email=oauth2User.getAttribute("email");
         String firstname=oauth2User.getAttribute("given_name");
@@ -50,7 +50,7 @@ public class LoginController {
     }
 
     @GetMapping("/chargingstation")
-    public RedirectView getChargingStation(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletResponse response){
+    public RedirectView getLoggedInChargingStation(@AuthenticationPrincipal OAuth2User oauth2User, HttpServletResponse response){
         Map<String, Object> attributes = oauth2User.getAttributes();
         String email=oauth2User.getAttribute("email");
         String token = chargingstationService.CheckStationAndSave(email,response);
